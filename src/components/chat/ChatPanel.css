@@ -21,9 +21,42 @@
 
 .chat-panel__message-list {
   flex: 1;
+  min-height: 0;
   overflow-y: auto;
   padding: 16px 20px;
   min-width: 0;
+}
+
+/* 提示在失败、重试和恢复之间占用相同空间，避免挤压消息视口。 */
+.chat-panel__read-status {
+  flex: 0 0 64px;
+  height: 64px;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 20px;
+  min-width: 0;
+}
+
+.chat-panel__read-status > .ant-typography {
+  flex: 1;
+  min-width: 0;
+  font-size: 13px;
+}
+
+.chat-panel__read-status > .ant-btn,
+.chat-panel__history-status > .ant-btn {
+  flex-shrink: 0;
+}
+
+.chat-panel__history-status {
+  flex: 0 0 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
 }
 
 .chat-panel__message-content {

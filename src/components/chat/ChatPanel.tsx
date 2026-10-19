@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { Layout, Button, Typography, theme, Empty, Spin } from "antd";
 import { App } from "antd";
@@ -6,6 +6,8 @@ import type { TextAreaRef } from "antd/es/input/TextArea";
 import { MessageOutlined } from "@ant-design/icons";
 import {
   useInfiniteQuery,
+  infiniteQueryOptions,
+  replaceEqualDeep,
   useMutation,
   useQuery,
   useQueryClient,
@@ -52,6 +54,25 @@ import type {
 import type { TaskMergeRequestPreflightList } from "@/types/task-model";
 
 const { Text } = Typography;
+
+// 回退已完整接回旧窗口后，合并恢复消息，保留已加载页和历史游标。
+function mergeRecoveredMessages(
+  current: InfiniteData<Page<Message>> | undefined,
+  incoming: Message[],
+  afterSequence: number,
+): InfiniteData<Page<Message>> | undefined {
+  if (!current?.pages.length) return current;
+  const updates = new Map(incoming.map((item) => [item.id, item]));
+  const known = new Set(current.pages.flatMap((item) => item.data).map((item) => item.id));
+  const pages = current.pages.map((item) => ({
+    ...item,
+    data: item.data.map((row) => updates.get(row.id) ?? row),
+  }));
+  const additions = [...updates.values()].filter((row) =>
+    !known.has(row.id) && row.sequence != null && row.sequence > afterSequence);
+  pages[0] = { ...pages[0], data: [...pages[0].data, ...additions] };
+  return replaceEqualDeep(current, { ...current, pages });
+}
 
 /**
  * 群聊聊天面板 —— 消息列表（含时间分隔线）+ @提及 + 发送 + 发起任务入口。
@@ -167,7 +188,51 @@ export function ChatPanel({
     embeddedPreviewUrl?: string;
   } | null>(null);
   const listRef = useRef<HTMLDivElement>(null);
-  const incrementalSyncRef = useRef<() => void>(() => {});
+  const incrementalSyncRef = useRef<() => Promise<void>>(async () => {});
+  const messageQueryKey = useMemo(
+    () => ["groups", projectId, groupId, "messages"] as const,
+    [projectId, groupId],
+  );
+  const readScope = `${projectId}/${groupId}`;
+  const readSession = useMemo(() => ({ scope: readScope }), [readScope]);
+  const activeReadScopeRef = useRef<typeof readSession | null>(readSession);
+  activeReadScopeRef.current = readSession;
+  useEffect(() => {
+    activeReadScopeRef.current = readSession;
+    return () => {
+      if (activeReadScopeRef.current === readSession) activeReadScopeRef.current = null;
+    };
+  }, [readSession]);
+  const [readStatus, setReadStatus] = useState({
+    scope: readScope,
+    historyFailed: false,
+    queryFailed: false,
+    incrementalFailed: false,
+    reconcileFailed: false,
+    queryRetryPending: false,
+    incrementalPending: false,
+    reconcilePending: false,
+  });
+  const updateReadStatus = useCallback(
+    (session: typeof readSession, patch: Partial<Omit<typeof readStatus, "scope">>) => {
+      if (activeReadScopeRef.current !== session) return;
+      const scope = session.scope;
+      setReadStatus((previous) => ({
+        ...(previous.scope === scope ? previous : {
+          scope,
+          historyFailed: false,
+          queryFailed: false,
+          incrementalFailed: false,
+          reconcileFailed: false,
+          queryRetryPending: false,
+          incrementalPending: false,
+          reconcilePending: false,
+        }),
+        ...patch,
+      }));
+    },
+    [],
+  );
   // 群聊 @ 提及：已读游标（markRead 返回）与「有人@我」提示条
   const [lastReadSeq, setLastReadSeq] = useState<number | null>(null);
   const [mentionFlashId, setMentionFlashId] = useState<string | null>(null);
@@ -180,6 +245,25 @@ export function ChatPanel({
   // 用户是否「应该保持贴底」：发送消息/切群/首载时置 true；用户主动上滚查看历史时置 false。
   // 图片加载完成、内容高度变化时据此决定是否自动滚到底，避免把看历史的用户拉回底部。
   const shouldStickToBottomRef = useRef(true);
+  const contentUpdateAnchorRef = useRef<{
+    session: typeof readSession;
+    messageId?: string;
+    offset: number;
+    scrollTop: number;
+  } | null>(null);
+  const rememberReadingPosition = useCallback(() => {
+    const el = listRef.current;
+    if (!el || shouldStickToBottomRef.current) return;
+    const top = el.getBoundingClientRect().top;
+    const row = [...el.querySelectorAll<HTMLElement>('[id^="msg-"]')]
+      .find((item) => item.getBoundingClientRect().bottom > top);
+    contentUpdateAnchorRef.current = {
+      session: readSession,
+      messageId: row?.id,
+      offset: row ? row.getBoundingClientRect().top - top : 0,
+      scrollTop: el.scrollTop,
+    };
+  }, [readSession]);
   // 本次发送后需要强制滚到底（即使布局滚动事件把 stick 标志重算为 false 也照滚），待消息渲染后清除。
   const pendingScrollRef = useRef(false);
   // 消息输入框 ref：右键「@ta」后聚焦进入编辑态
@@ -245,26 +329,66 @@ export function ChatPanel({
     (a) => a.status === "ACTIVE" && a.name === "编排助手",
   );
 
+  const messageQueryOptions = useMemo(() => infiniteQueryOptions({
+    queryKey: messageQueryKey,
+    queryFn: ({ pageParam }) => groupApi.listMessages(projectId, groupId, pageParam),
+    initialPageParam: undefined as string | undefined,
+    getNextPageParam: (lastPage: Page<Message>) =>
+      lastPage.page.hasMore ? lastPage.page.nextCursor : undefined,
+    enabled: !!projectId && !!groupId,
+  }), [messageQueryKey, projectId, groupId]);
   const {
     data: page,
     isLoading,
-    isError,
+    isLoadingError,
     fetchNextPage,
+    refetch: refetchMessages,
     hasNextPage,
     isFetchingNextPage,
-  } = useInfiniteQuery({
-    queryKey: ["groups", projectId, groupId, "messages"],
-    queryFn: ({ pageParam }) =>
-      groupApi.listMessages(
-        projectId,
-        groupId,
-        pageParam as string | undefined,
-      ),
-    initialPageParam: undefined as string | undefined,
-    getNextPageParam: (lastPage) =>
-      lastPage.page.hasMore ? lastPage.page.nextCursor : undefined,
-    enabled: !!projectId && !!groupId,
-  });
+    isRefetching,
+  } = useInfiniteQuery(messageQueryOptions);
+  // 只让对应 REST 操作的终态清错；增量 setQueryData 的 manual success
+  // 不能抹掉仍未恢复的历史分页或整页同步失败。
+  useEffect(() => {
+    const cached = queryClient.getQueryState(messageQueryKey);
+    const isHistory = cached?.fetchMeta?.fetchMore?.direction === "forward";
+    updateReadStatus(readSession, {
+      historyFailed: cached?.status === "error" && cached.data !== undefined && isHistory,
+      queryFailed: cached?.status === "error" && cached.data !== undefined && !isHistory,
+    });
+    return queryClient.getQueryCache().subscribe((event) => {
+      if (event.type !== "updated" ||
+        event.query.queryKey.length !== messageQueryKey.length ||
+        !messageQueryKey.every((part, index) => event.query.queryKey[index] === part)) return;
+      const { action, query } = event;
+      const history = query.state.fetchMeta?.fetchMore?.direction === "forward";
+      if (action.type === "error" && query.state.data !== undefined) {
+        updateReadStatus(readSession, history ? { historyFailed: true } : { queryFailed: true });
+      } else if (action.type === "success" && !action.manual) {
+        updateReadStatus(readSession, history ? { historyFailed: false } : { queryFailed: false });
+      }
+    });
+  }, [messageQueryKey, queryClient, readSession, updateReadStatus]);
+  const hasMessageCache = page !== undefined;
+  const currentReadStatus = readStatus.scope === readScope ? readStatus : undefined;
+  const historyFailed = currentReadStatus?.historyFailed ?? false;
+  const querySyncFailed = currentReadStatus?.queryFailed ?? false;
+  const incrementalFailed = currentReadStatus?.incrementalFailed ?? false;
+  const reconcileFailed = currentReadStatus?.reconcileFailed ?? false;
+  const syncFailed = querySyncFailed || incrementalFailed || reconcileFailed;
+  const syncPending = isRefetching || currentReadStatus?.queryRetryPending ||
+    currentReadStatus?.incrementalPending || currentReadStatus?.reconcilePending;
+  const refreshMessageQuery = useCallback(async (): Promise<boolean> => {
+    const currentQuery = queryClient.getQueryCache().find({ queryKey: messageQueryKey, exact: true });
+    if (currentQuery?.state.fetchMeta?.fetchMore?.direction === "forward") {
+      // cancelRefetch:false 会复用历史请求；先等它结束，随后明确发起最新消息重查。
+      await currentQuery.promise?.catch(() => undefined);
+    }
+    if (activeReadScopeRef.current !== readSession) return false;
+    // fetchInfiniteQuery 等待实际请求（包括离线暂停后恢复），不会将 paused 当作成功。
+    await queryClient.fetchInfiniteQuery({ ...messageQueryOptions, staleTime: 0 });
+    return activeReadScopeRef.current === readSession;
+  }, [messageQueryKey, messageQueryOptions, queryClient, readSession]);
   // 后端消息列表不保证顺序，按 sequence（缺则退回 createdAt）升序排，保证新消息在下方。
   // useInfiniteQuery 的 page 顺序是「第一页(最新) → 下一页(更早)」，合并后统一按 sequence 升序。
   const messages = useMemo(() => {
@@ -298,6 +422,7 @@ export function ChatPanel({
         return;
       }
       syncing = true;
+      updateReadStatus(readSession, { incrementalPending: true });
       try {
         let afterSequence = currentSequence();
         const received: Message[] = [];
@@ -320,7 +445,9 @@ export function ChatPanel({
             break;
           afterSequence = nextSequence;
         }
-        if (stopped || received.length === 0) return;
+        if (stopped) return;
+        updateReadStatus(readSession, { incrementalFailed: false });
+        if (received.length === 0) return;
         queryClient.setQueryData<InfiniteData<Page<Message>>>(key, (old) => {
           if (!old || !lastPage) {
             return {
@@ -339,18 +466,17 @@ export function ChatPanel({
           };
         });
       } catch {
-        // REST 是可靠来源；短暂网络失败交由下一次 SSE/WS 信号或重连再次补偿。
+        if (!stopped) updateReadStatus(readSession, { incrementalFailed: true });
       } finally {
         syncing = false;
+        if (!stopped) updateReadStatus(readSession, { incrementalPending: false });
         if (pending && !stopped) {
           pending = false;
           void sync();
         }
       }
     };
-    incrementalSyncRef.current = () => {
-      void sync();
-    };
+    incrementalSyncRef.current = sync;
     const onMessageEvent = (event: Event) => {
       const detail = (
         event as CustomEvent<{
@@ -386,16 +512,22 @@ export function ChatPanel({
     window.addEventListener("qgents:realtime-reconnected", onReconnect);
     return () => {
       stopped = true;
-      incrementalSyncRef.current = () => {};
+      incrementalSyncRef.current = async () => {};
       window.removeEventListener("qgents:message-event", onMessageEvent);
       window.removeEventListener("qgents:realtime-reconnected", onReconnect);
     };
-  }, [groupId, projectId, queryClient]);
+  }, [groupId, projectId, queryClient, readSession, updateReadStatus]);
 
   // 首屏列表完成后补一次，覆盖「事件先到、查询尚未写入缓存」的竞态。
+  const initialSyncSessionRef = useRef<typeof readSession | null>(null);
   useEffect(() => {
-    if (page) incrementalSyncRef.current();
-  }, [page]);
+    if (!hasMessageCache || initialSyncSessionRef.current === readSession) return;
+    initialSyncSessionRef.current = readSession;
+    void incrementalSyncRef.current();
+    return () => {
+      if (initialSyncSessionRef.current === readSession) initialSyncSessionRef.current = null;
+    };
+  }, [hasMessageCache, readSession]);
 
   // 发送者头像（微信式，边缘展示）：优先群成员 avatarUrl，自己用当前用户头像；SYSTEM 无头像
   const memberAvatarById = new Map(
@@ -420,6 +552,38 @@ export function ChatPanel({
     });
   }, []);
 
+  const prevScrollAnchorRef = useRef<{
+    session: typeof readSession;
+    messageId?: string;
+    offset: number;
+    scrollTop: number;
+  } | null>(null);
+  const historyRequestRef = useRef<{ session: typeof readSession } | null>(null);
+  const loadEarlierMessages = useCallback(async () => {
+    const el = listRef.current;
+    if (!el || !hasNextPage || isFetchingNextPage || isRefetching ||
+      historyRequestRef.current?.session === readSession) return;
+    const request = { session: readSession };
+    historyRequestRef.current = request;
+    const viewportTop = el.getBoundingClientRect().top;
+    const visibleMessage = [...el.querySelectorAll<HTMLElement>('[id^="msg-"]')]
+      .find((row) => row.getBoundingClientRect().bottom > viewportTop);
+    prevScrollAnchorRef.current = {
+      session: readSession,
+      messageId: visibleMessage?.id,
+      offset: visibleMessage ? visibleMessage.getBoundingClientRect().top - viewportTop : 0,
+      scrollTop: el.scrollTop,
+    };
+    shouldStickToBottomRef.current = false;
+    try {
+      await fetchNextPage({ cancelRefetch: false });
+    } catch {
+      updateReadStatus(readSession, { historyFailed: true });
+    } finally {
+      if (historyRequestRef.current === request) historyRequestRef.current = null;
+    }
+  }, [hasNextPage, isFetchingNextPage, isRefetching, readSession, fetchNextPage, updateReadStatus]);
+
   // 单张图片加载完成：如果用户「应该保持贴底」，则重新滚到底（rAF 等布局稳定后再滚）。
   // 多张图片时每张触发一次，第 1 张、第 2 张……依次改变高度都能重新贴底。
   const handleImageLoad = useCallback(() => {
@@ -440,28 +604,38 @@ export function ChatPanel({
     shouldStickToBottomRef.current =
       el.scrollHeight - el.scrollTop - el.clientHeight <= 80;
     // 顶部触发加载更早历史：scrollTop 接近 0 且还有下一页，且不在加载中
-    if (el.scrollTop <= 24 && hasNextPage && !isFetchingNextPage) {
-      void fetchNextPage();
+    if (el.scrollTop <= 24 && !historyFailed) {
+      void loadEarlierMessages();
     }
-  }, [hasNextPage, isFetchingNextPage, fetchNextPage]);
+  }, [historyFailed, loadEarlierMessages]);
 
-  // 向上加载更早消息后保持滚动位置：记录加载前的「距底距离」，加载完成后恢复，
-  // 避免新页插入顶部后视图跳到顶部（停留在原来看的那条消息附近）。
-  const prevScrollAnchorRef = useRef<number | null>(null);
-  useEffect(() => {
+  // 成功前插历史后恢复同一可见消息；失败时消息节点和高度保持，不重建列表。
+  useLayoutEffect(() => {
     const el = listRef.current;
-    if (!el) return;
-    if (isFetchingNextPage) {
-      prevScrollAnchorRef.current = el.scrollHeight - el.scrollTop;
-      return;
-    }
     const anchor = prevScrollAnchorRef.current;
-    if (anchor != null && messages.length > 0) {
-      el.scrollTop = el.scrollHeight - anchor;
+    if (!el || isFetchingNextPage || !anchor || anchor.session !== readSession) return;
+    const row = anchor.messageId ? document.getElementById(anchor.messageId) : null;
+    if (row && el.contains(row)) {
+      el.scrollTop += row.getBoundingClientRect().top - el.getBoundingClientRect().top - anchor.offset;
+    } else {
+      el.scrollTop = anchor.scrollTop;
     }
     prevScrollAnchorRef.current = null;
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isFetchingNextPage, messages.length]);
+  }, [isFetchingNextPage, page, historyFailed, readSession]);
+
+  // 卡片正文/步骤变高时也恢复阅读锚点；在写缓存前采样，允许请求中继续滚动。
+  useLayoutEffect(() => {
+    const el = listRef.current;
+    const anchor = contentUpdateAnchorRef.current;
+    if (!el || !anchor || anchor.session !== readSession) return;
+    const row = anchor.messageId ? document.getElementById(anchor.messageId) : null;
+    if (row && el.contains(row)) {
+      el.scrollTop += row.getBoundingClientRect().top - el.getBoundingClientRect().top - anchor.offset;
+    } else {
+      el.scrollTop = anchor.scrollTop;
+    }
+    contentUpdateAnchorRef.current = null;
+  }, [page, readSession]);
 
   // ResizeObserver：监听消息内容容器高度变化（图片加载、新消息渲染都会改变高度）。
   // 辅助机制：图片 onLoad 是主信号，RO 兜底覆盖「图片失败/懒加载等无 onLoad 场景」。
@@ -574,76 +748,182 @@ export function ChatPanel({
     void markGroupReadNow();
   }, [page, groupId, markGroupReadNow]);
 
-  /**
-   * 消息校准（可靠消息同步 §1/§2）：
-   * - 本地消息带 sequence → 用 max(sequence) 调 /messages/incremental 补齐缺失消息，合并进缓存
-   * - incremental 失败或本地无 sequence → 回退整页 invalidate 重拉
-   */
-  const reconcileMessages = useCallback(async (): Promise<void> => {
-    if (!projectId || !groupId) return;
-    // useInfiniteQuery 缓存结构为 { pages, pageParams }：取全部页的消息算最大 sequence
-    const cached = queryClient.getQueryData<InfiniteData<Page<Message>>>([
-      "groups",
-      projectId,
-      groupId,
-      "messages",
-    ]);
-    const all = cached?.pages.flatMap((p) => p.data) ?? [];
-    const sequences = all
-      .map((m) => m.sequence)
-      .filter((s): s is number => typeof s === "number");
-    const maxSequence = sequences.length > 0 ? Math.max(...sequences) : null;
-
-    if (maxSequence == null) {
-      // 本地没有 sequence 信息（旧数据/首次）→ 整页重拉
-      void queryClient.invalidateQueries({
-        queryKey: ["groups", projectId, groupId, "messages"],
-      });
-      void queryClient.invalidateQueries({ queryKey: ["groups", projectId] });
-      void queryClient.invalidateQueries({ queryKey: ["chat", "main-groups"] });
-      return;
+  // v2.0.23 §23：TASK_STATUS/DIFF 原地改 content，不会增加 sequence。
+  // 按原已加载卡片 ID 校准，避免最新页移动后漏掉正在阅读的旧卡片。
+  const refreshLoadedCards = useCallback(async (
+    snapshot: InfiniteData<Page<Message>> | undefined,
+  ): Promise<boolean> => {
+    const cards = [...new Map((snapshot?.pages.flatMap((item) => item.data) ?? [])
+      .filter((item) => item.type === "TASK_STATUS" || item.type === "DIFF")
+      .map((item) => [item.id, item])).values()];
+    const before = new Map((queryClient.getQueryData<InfiniteData<Page<Message>>>(messageQueryKey)
+      ?.pages.flatMap((item) => item.data) ?? []).map((item) => [item.id, item]));
+    const updates = new Map<string, Message>();
+    for (let start = 0; start < cards.length; start += 4) {
+      if (activeReadScopeRef.current !== readSession) return false;
+      const results = await Promise.all(cards.slice(start, start + 4)
+        .map((item) => groupApi.getMessage(projectId, groupId, item.id)));
+      for (const item of results) updates.set(item.id, item);
     }
+    if (activeReadScopeRef.current !== readSession) return false;
+    if (updates.size > 0) {
+      rememberReadingPosition();
+      queryClient.setQueryData<InfiniteData<Page<Message>>>(messageQueryKey, (current) => {
+        if (!current) return current;
+        return {
+          ...current,
+          pages: current.pages.map((item) => ({
+            ...item,
+            // 读取期间其他实时查询已替换的卡片，不能被旧响应覆盖。
+            data: item.data.map((row) => row === before.get(row.id) ? updates.get(row.id) ?? row : row),
+          })),
+        };
+      });
+    }
+    return true;
+  }, [groupId, projectId, messageQueryKey, queryClient, readSession, rememberReadingPosition]);
 
+  // 增量不可用时，历史回退必须接回原最大序号，不能只取最新一页就宣称补齐。
+  const recoverMessagesFromHistory = useCallback(async (afterSequence: number): Promise<boolean> => {
+    const rows = await queryClient.fetchQuery({
+      queryKey: [...messageQueryKey, "recovery", afterSequence],
+      staleTime: 0,
+      queryFn: async (): Promise<Message[]> => {
+        const recovered: Message[] = [];
+        const cursors = new Set<string>();
+        let cursor: string | undefined;
+        while (true) {
+          if (activeReadScopeRef.current !== readSession) throw new Error("已切换群聊，停止旧群同步");
+          const result = await groupApi.listMessages(projectId, groupId, cursor, 100);
+          recovered.push(...result.data);
+          if (result.data.some((item) => item.sequence != null && item.sequence <= afterSequence) ||
+            !result.page.hasMore) return recovered;
+          const nextCursor = result.page.nextCursor;
+          if (!nextCursor || cursors.has(nextCursor)) throw new Error("历史游标未推进，同步尚未完成");
+          cursors.add(nextCursor);
+          cursor = nextCursor;
+        }
+      },
+    });
+    if (activeReadScopeRef.current !== readSession) return false;
+    // 与历史前插串行，合并时读取最新缓存，保留请求期间加载的旧页与新消息。
+    const historyQuery = queryClient.getQueryCache().find({ queryKey: messageQueryKey, exact: true });
+    if (historyQuery?.state.fetchMeta?.fetchMore?.direction === "forward") {
+      await historyQuery.promise?.catch(() => undefined);
+    }
+    if (activeReadScopeRef.current !== readSession) return false;
+    rememberReadingPosition();
+    queryClient.setQueryData<InfiniteData<Page<Message>>>(messageQueryKey,
+      (current) => mergeRecoveredMessages(current, rows, afterSequence));
+    return true;
+  }, [groupId, projectId, messageQueryKey, queryClient, readSession, rememberReadingPosition]);
+
+  /** 补新增消息，再按 ID 校准原窗口卡片；增量为空也不能跳过内容校准。 */
+  const reconcileRequestRef = useRef<typeof readSession | null>(null);
+  const reconcileMessages = useCallback(async (): Promise<void> => {
+    if (!projectId || !groupId || reconcileRequestRef.current === readSession) return;
+    reconcileRequestRef.current = readSession;
+    updateReadStatus(readSession, { reconcilePending: true });
     try {
-      // §1：增量拉取 sequence > maxSequence 的消息，按 id 去重合并进第一页（最新页）
-      const incremental = await groupApi.listMessagesIncremental(
+      // useInfiniteQuery 缓存结构为 { pages, pageParams }：取全部页的消息算最大 sequence
+      const cached = queryClient.getQueryData<InfiniteData<Page<Message>>>([
+        "groups",
         projectId,
         groupId,
-        maxSequence,
-      );
-      if (incremental.data.length === 0) return;
-      queryClient.setQueryData<InfiniteData<Page<Message>>>(
-        ["groups", projectId, groupId, "messages"],
-        (prev) => {
-          if (!prev) {
-            return {
-              pages: [incremental],
-              pageParams: [undefined],
-            };
+        "messages",
+      ]);
+      const all = cached?.pages.flatMap((p) => p.data) ?? [];
+      const sequences = all
+        .map((m) => m.sequence)
+        .filter((s): s is number => typeof s === "number");
+      const maxSequence = sequences.length > 0 ? Math.max(...sequences) : null;
+
+      if (maxSequence == null) {
+        // 本地没有 sequence 信息（旧数据/首次）→ 整页重拉
+        if (await refreshMessageQuery() && await refreshLoadedCards(cached)) {
+          updateReadStatus(readSession, { reconcileFailed: false });
+        }
+        void queryClient.invalidateQueries({ queryKey: ["groups", projectId], exact: true });
+        void queryClient.invalidateQueries({ queryKey: ["chat", "main-groups"] });
+        return;
+      }
+
+      let incremental: Page<Message>;
+      try {
+        let afterSequence = maxSequence;
+        const received: Message[] = [];
+        while (true) {
+          if (activeReadScopeRef.current !== readSession) return;
+          const part = await groupApi.listMessagesIncremental(projectId, groupId, afterSequence);
+          received.push(...part.data);
+          if (!part.page.hasMore) {
+            incremental = { ...part, data: received };
+            break;
           }
-          const [first, ...rest] = prev.pages;
-          const updates = new Map(incremental.data.map((m) => [m.id, m]));
-          const merged = first.data.map((m) => updates.get(m.id) ?? m);
-          const known = new Set(first.data.map((m) => m.id));
-          merged.push(...incremental.data.filter((m) => !known.has(m.id)));
-          return {
-            ...prev,
-            pages: [{ ...first, data: merged }, ...rest],
-          };
-        },
-      );
-      // 群列表/主群的最新消息摘要也需校准
-      void queryClient.invalidateQueries({ queryKey: ["groups", projectId] });
+          const next = Number(part.page.nextCursor);
+          if (!Number.isSafeInteger(next) || next <= afterSequence) throw new Error("增量游标未推进");
+          afterSequence = next;
+        }
+      } catch {
+        // 历史回退完整接回旧窗口，再校准原窗口的可更新卡片。
+        if (activeReadScopeRef.current !== readSession) return;
+        updateReadStatus(readSession, { reconcileFailed: true });
+        if (await recoverMessagesFromHistory(maxSequence) && await refreshLoadedCards(cached)) {
+          updateReadStatus(readSession, { reconcileFailed: false });
+        }
+        void queryClient.invalidateQueries({ queryKey: ["groups", projectId], exact: true });
+        void queryClient.invalidateQueries({ queryKey: ["chat", "main-groups"] });
+        return;
+      }
+      if (activeReadScopeRef.current !== readSession) return;
+      if (incremental.data.length > 0) {
+        // 新消息只补入最新页；已有卡片内容由下面的独立 REST 校准负责。
+        queryClient.setQueryData<InfiniteData<Page<Message>>>(
+          ["groups", projectId, groupId, "messages"],
+          (prev) => {
+            if (!prev) {
+              return {
+                pages: [incremental],
+                pageParams: [undefined],
+              };
+            }
+            const [first, ...rest] = prev.pages;
+            const updates = new Map(incremental.data.map((m) => [m.id, m]));
+            const merged = first.data.map((m) => updates.get(m.id) ?? m);
+            const known = new Set(first.data.map((m) => m.id));
+            merged.push(...incremental.data.filter((m) => !known.has(m.id)));
+            return {
+              ...prev,
+              pages: [{ ...first, data: merged }, ...rest],
+            };
+          },
+        );
+      }
+      if (await refreshLoadedCards(cached)) updateReadStatus(readSession, { reconcileFailed: false });
+      void queryClient.invalidateQueries({ queryKey: ["groups", projectId], exact: true });
       void queryClient.invalidateQueries({ queryKey: ["chat", "main-groups"] });
     } catch {
-      // 增量接口失败（如后端未实现）→ 回退整页重拉
-      void queryClient.invalidateQueries({
-        queryKey: ["groups", projectId, groupId, "messages"],
-      });
-      void queryClient.invalidateQueries({ queryKey: ["groups", projectId] });
-      void queryClient.invalidateQueries({ queryKey: ["chat", "main-groups"] });
+      updateReadStatus(readSession, { reconcileFailed: true });
+    } finally {
+      if (reconcileRequestRef.current === readSession) reconcileRequestRef.current = null;
+      updateReadStatus(readSession, { reconcilePending: false });
     }
-  }, [projectId, groupId, queryClient]);
+  }, [projectId, groupId, queryClient, readSession, updateReadStatus, refreshMessageQuery, refreshLoadedCards, recoverMessagesFromHistory]);
+
+  const queryRetryRequestRef = useRef<typeof readSession | null>(null);
+  const retryMessageSync = () => {
+    if (syncPending) return;
+    if (querySyncFailed && queryRetryRequestRef.current !== readSession) {
+      queryRetryRequestRef.current = readSession;
+      updateReadStatus(readSession, { queryRetryPending: true });
+      void refreshMessageQuery().catch(() => undefined).finally(() => {
+        if (queryRetryRequestRef.current === readSession) queryRetryRequestRef.current = null;
+        updateReadStatus(readSession, { queryRetryPending: false });
+      });
+    }
+    if (incrementalFailed) void incrementalSyncRef.current();
+    if (reconcileFailed) void reconcileMessages();
+  };
 
   // 窗口从后台/最小化回到前台时校准当前群消息：浏览器会挂起后台标签页（WS 断开、消息丢失），
   // 而全局 refetchOnWindowFocus 为 false，回前台必须显式校准，否则群聊面板停留旧消息。
@@ -1156,9 +1436,21 @@ export function ChatPanel({
           onOpenTaskTrigger={() => setTriggerOpen(true)}
           onOpenSettings={() => setSettingsOpen(true)}
         />
+        <div className="chat-panel__read-status" role="status" aria-live="polite">
+          <Text type={syncFailed ? "warning" : "secondary"}>
+            {hasMessageCache ? (
+              syncFailed ? "同步未成功，当前显示已有消息" : syncPending ? "正在同步消息…" : "显示当前已加载消息"
+            ) : null}
+          </Text>
+          {hasMessageCache && syncFailed ? (
+            <Button type="link" size="small" loading={Boolean(syncPending)} onClick={retryMessageSync}>
+              重试同步
+            </Button>
+          ) : null}
+        </div>
         {/* 消息列表 */}
         <ChatMessageViewport listRef={listRef} onScroll={handleScroll}>
-          {isLoading ? (
+          {!hasMessageCache && isLoading ? (
             <div
               style={{
                 height: "100%",
@@ -1175,8 +1467,12 @@ export function ChatPanel({
                 </div>
               </div>
             </div>
-          ) : isError ? (
-            <Empty description="消息加载失败" />
+          ) : !hasMessageCache && isLoadingError ? (
+            <Empty description="消息加载失败">
+              <Button loading={isRefetching || isLoading} onClick={() => void refetchMessages({ cancelRefetch: false })}>
+                重试加载消息
+              </Button>
+            </Empty>
           ) : messages.length === 0 ? (
             <Empty description="还没有消息，来说点什么吧" />
           ) : (
@@ -1186,8 +1482,15 @@ export function ChatPanel({
               style={{ display: "flex", flexDirection: "column", gap: 12 }}
             >
               {/* 顶部：加载更早历史的分页指示 */}
-              <div style={{ textAlign: "center", padding: "8px 0" }}>
-                {isFetchingNextPage ? (
+              <div className="chat-panel__history-status" role="status" aria-live="polite">
+                {historyFailed ? (
+                  <>
+                    <Text type="warning">更早消息加载失败</Text>
+                    <Button type="link" size="small" loading={isFetchingNextPage} disabled={isRefetching} onClick={() => void loadEarlierMessages()}>
+                      重试加载历史
+                    </Button>
+                  </>
+                ) : isFetchingNextPage ? (
                   <Spin size="small" />
                 ) : hasNextPage ? (
                   <Text type="secondary" style={{ fontSize: 12 }}>
