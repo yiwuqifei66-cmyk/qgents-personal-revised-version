@@ -1,0 +1,292 @@
+.page {
+  min-height: calc(100vh - 56px);
+  padding: 24px 28px 48px;
+  background: #f4f7fb;
+  color: #12213d;
+}
+
+.header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.title {
+  margin: 0 !important;
+  color: #12213d;
+  font-size: 26px;
+  font-weight: 700;
+}
+
+.subtitle {
+  margin: 8px 0 0;
+  color: #6d7d95;
+  font-size: 14px;
+}
+
+.backLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 16px;
+  color: #5b6b82;
+  font-size: 13px;
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.backLink:hover {
+  color: #0d9b9b;
+}
+
+.content {
+  background: #fff;
+  border: 1px solid #e8edf3;
+  border-radius: 10px;
+  padding: 20px 24px;
+}
+
+.state {
+  display: flex;
+  justify-content: center;
+  padding: 64px 0;
+}
+
+/* Seal styles from MergeRequestDetailPage */
+.sealBlock {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  margin-top: 20px;
+  padding: 20px 12px 28px;
+  border-top: 1px dashed #e8edf3;
+}
+
+.seal {
+  position: relative;
+  width: 168px;
+  height: 168px;
+  color: #94a3b8;
+}
+
+.sealRing {
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  border: 6px double currentColor;
+  border-radius: 50%;
+}
+
+.sealInner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  width: calc(100% - 22px);
+  height: calc(100% - 22px);
+  border: 2px solid currentColor;
+  border-radius: 50%;
+}
+
+.seal.isEmpty .sealRing,
+.seal.isLocked .sealRing {
+  border-style: dashed;
+}
+
+.seal.isStamped {
+  color: #b91c1c;
+  background: #fef2f2;
+  border-radius: 50%;
+}
+
+.seal.isFailed {
+  color: #dc2626;
+  background: #fef2f2;
+  border-radius: 50%;
+}
+
+.seal.isCracked {
+  color: #b45309;
+  background: #fff7ed;
+  border-radius: 50%;
+}
+
+.seal.isCracked::after {
+  content: '';
+  position: absolute;
+  top: 12%;
+  left: 48%;
+  width: 3px;
+  height: 76%;
+  background: #fff;
+  box-shadow: 0 0 0 1px currentColor;
+  transform: rotate(18deg);
+  pointer-events: none;
+}
+
+.sealLock {
+  margin-bottom: 2px;
+  font-size: 16px;
+}
+
+.sealMark {
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.18em;
+}
+
+.sealSha {
+  font-family: ui-monospace, Consolas, monospace;
+  font-size: 18px;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+}
+
+.sealState {
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.sealMeta {
+  max-width: 420px;
+  text-align: center;
+  color: #5b6b82;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.sealMeta p {
+  margin: 0;
+}
+
+.sealDenied {
+  color: #dc2626;
+  font-weight: 700;
+}
+
+.sealHistory {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  padding: 0;
+  height: auto;
+  font-size: 12px;
+  color: #5b6b82;
+}
+
+.sealHistoryState {
+  display: flex;
+  justify-content: center;
+  padding: 24px 0;
+}
+
+.sealHistoryList {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.sealHistoryItem {
+  padding: 12px 0;
+  border-bottom: 1px solid #eef2f6;
+}
+
+.sealHistoryItem:last-child {
+  border-bottom: 0;
+}
+
+.sealHistoryHead {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 6px;
+}
+
+.sealHistoryHead strong {
+  font-size: 14px;
+}
+
+.isApproved {
+  color: #16a34a;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.isRejected {
+  color: #dc2626;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.sealHistoryReason,
+.sealHistoryTime {
+  margin: 0;
+  color: #5b6b82;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.sealHistoryTime {
+  margin-top: 4px;
+  font-size: 12px;
+}
+
+/* Submit section */
+.submitSection {
+  margin-top: 24px;
+  padding-top: 16px;
+  border-top: 1px solid #e8edf3;
+}
+
+.submitHeader {
+  margin-bottom: 12px;
+}
+
+.submitList {
+  display: flex;
+  flex-direction: column;
+}
+
+.submitActions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.submitSuccess,
+.submitFailed,
+.submitLocked,
+.submitPending {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 12px 16px;
+  background: #f7f9fc;
+  border-radius: 8px;
+}
+
+.submitSuccess {
+  background: #f0fdf4;
+  border: 1px solid #bbf7d0;
+}
+
+.submitFailed {
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+}
+
+.submitLocked,
+.submitPending {
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+}

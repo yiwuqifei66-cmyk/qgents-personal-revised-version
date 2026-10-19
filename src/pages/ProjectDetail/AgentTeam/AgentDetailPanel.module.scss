@@ -1,0 +1,34 @@
+.panel { min-width: 0; height: 100%; max-height: calc(100vh - 220px); overflow-y: auto; background: #fff; border-left: 1px solid #e0e7f0; }
+.header { display: flex; align-items: center; justify-content: space-between; gap: clamp(6px, 0.3vw + 3px, 10px); padding: clamp(10px, 0.5vw + 6px, 16px) clamp(10px, 0.6vw + 6px, 18px) clamp(8px, 0.4vw + 4px, 12px); }
+.identity { display: flex; align-items: center; min-width: 0; gap: clamp(6px, 0.2vw + 4px, 10px); }
+.avatar { flex: 0 0 auto; color: #fff; background: #4d32d6; }
+.identityText { min-width: 0; }
+.actions { display: flex; flex-wrap: nowrap; justify-content: flex-end; gap: clamp(2px, 0.1vw + 1px, 4px); }
+.name { margin: 0 !important; overflow: hidden; color: #172a59 !important; text-overflow: ellipsis; white-space: nowrap; font-size: clamp(13px, 0.5vw + 8px, 15px); }
+.tabs { display: flex; padding: 0 clamp(8px, 0.4vw + 5px, 12px); border-bottom: 1px solid #e0e7f0; overflow-x: auto; }
+.tabs > .tab { flex: 1 1 0; min-width: 0; padding: clamp(5px, 0.3vw + 3px, 8px) clamp(7px, 0.3vw + 4px, 10px); color: #6a7da1; border: 0; border-bottom: 2px solid transparent; background: transparent; white-space: nowrap; cursor: pointer; text-align: center; font-size: clamp(10px, 0.2vw + 8px, 12px); }
+.tab:hover { color: #1677ff; background: #f3f8ff; }
+.tabActive { color: #1677ff; border-bottom-color: #1677ff; font-weight: 650; }
+.body { padding: clamp(10px, 0.5vw + 6px, 16px) clamp(10px, 0.6vw + 6px, 18px) clamp(14px, 0.6vw + 8px, 22px); }
+.section { margin-bottom: clamp(10px, 0.5vw + 4px, 16px); }
+.description { color: #53698e; line-height: 1.6; font-size: clamp(10px, 0.2vw + 8px, 12px); }
+.usageGrid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: clamp(6px, 0.3vw + 4px, 10px); margin-bottom: clamp(12px, 0.6vw + 6px, 18px); }
+.usage { display: flex; flex-direction: column; gap: 3px; padding: clamp(6px, 0.3vw + 3px, 10px); border: 1px solid #e4eaf2; border-radius: 6px; background: #fbfcfe; font-size: clamp(10px, 0.2vw + 8px, 12px); }
+.usage strong { color: #1c2e5b; font-size: clamp(12px, 0.3vw + 8px, 14px); }
+.card { margin-bottom: clamp(8px, 0.4vw + 4px, 12px); padding: clamp(8px, 0.4vw + 4px, 12px); border: 1px solid #e4eaf2; border-radius: 6px; background: #fbfcfe; }
+.card h5 { margin: 0 0 clamp(5px, 0.3vw + 3px, 9px) !important; color: #172a59 !important; font-size: clamp(11px, 0.3vw + 8px, 13px); }
+.taskCard { display: flex; flex-direction: column; gap: 4px; padding: clamp(6px, 0.3vw + 3px, 10px); border-left: 3px solid #4c8dff; background: #f6f9ff; font-size: clamp(10px, 0.2vw + 8px, 12px); }
+.assignmentColumns { display: grid; grid-template-columns: 1fr; gap: 10px; }
+.list { margin: 0; padding: 0; list-style: none; color: #53698e; font-size: clamp(10px, 0.2vw + 8px, 12px); }
+.list li { display: flex; align-items: center; justify-content: space-between; gap: clamp(6px, 0.3vw + 3px, 10px); padding: clamp(4px, 0.3vw + 2px, 7px) 0; border-bottom: 1px solid #edf1f6; }
+.list li:last-child { border-bottom: 0; }
+.definition { display: grid; grid-template-columns: clamp(56px, 4vw + 36px, 78px) 1fr; gap: clamp(5px, 0.3vw + 3px, 8px) clamp(6px, 0.3vw + 3px, 10px); margin: 0 0 clamp(8px, 0.4vw + 4px, 12px); color: #53698e; font-size: clamp(10px, 0.2vw + 8px, 12px); }
+.definition dt { color: #7184a5; }
+.definition dd { margin: 0; overflow-wrap: anywhere; }
+.tags { display: flex; flex-wrap: wrap; gap: 5px; }
+.runList { display: flex; flex-direction: column; gap: 7px; }
+.runItem { display: flex; flex-direction: column; align-items: flex-start; gap: 3px; width: 100%; padding: clamp(6px, 0.3vw + 3px, 10px); color: #1c2e5b; text-align: left; border: 1px solid #e4eaf2; border-radius: 6px; background: #fbfcfe; cursor: pointer; font-size: clamp(10px, 0.2vw + 8px, 12px); }
+.runItem:hover { border-color: #8cb7ff; background: #f3f8ff; }
+.runHeader { display: flex; align-items: center; justify-content: space-between; width: 100%; gap: 6px; }
+@media (max-width: 1199px) { .panel { max-height: none; overflow-y: visible; } }
+@media (max-width: 767px) { .header, .body { padding-inline: 12px; } }

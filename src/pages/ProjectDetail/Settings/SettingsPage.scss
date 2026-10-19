@@ -1,0 +1,487 @@
+// src/pages/ProjectDetail/sections/SettingsPage.scss
+
+.settings-page {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  background: #f5f7fa;
+
+  &__loading {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    min-height: 300px;
+  }
+
+  &__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    padding: 24px 32px 16px;
+    background: #fff;
+    border-bottom: 1px solid #e8ecf1;
+    flex-shrink: 0;
+  }
+
+  &__header-left {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  &__title {
+    margin: 0 !important;
+    font-size: 20px !important;
+    font-weight: 600 !important;
+    color: #1a2332 !important;
+  }
+
+  &__desc {
+    font-size: 14px;
+    color: #6b7a8f;
+  }
+
+  &__header-right {
+    flex-shrink: 0;
+    padding-top: 4px;
+  }
+
+  // 基本信息 + 仓库 左右两栏（需求群规则 / 任务执行已移除）
+  &__body {
+    flex: 1;
+    min-height: 0; // 允许收缩：两栏卡片占满剩余高度
+    display: flex;
+    align-items: stretch; // 两栏等高
+    gap: 24px;
+    width: 100%;
+    max-width: 1080px;
+    margin: 0 auto;
+    padding: 28px 32px 48px;
+  }
+
+  &__col {
+    flex: 1;
+    min-width: 0;
+    min-height: 0;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    border: 1px solid #e8ecf1;
+    border-radius: 12px;
+    background: #fff;
+    padding: 20px 24px 28px;
+    box-shadow: 0 1px 3px rgba(16, 35, 77, 0.06);
+    // 内容超出卡片高度时卡片内滚动（标题不滚动，仅内容区滚动）
+    overflow: hidden;
+
+    .settings-page__col-title {
+      flex-shrink: 0;
+    }
+
+    .settings-page__col-body {
+      flex: 1;
+      min-height: 0;
+      overflow-y: auto;
+    }
+  }
+
+  &__section-title {
+    margin: 0 0 16px !important;
+    font-size: 16px !important;
+    font-weight: 600 !important;
+    color: #1a2332 !important;
+  }
+
+  &__tabs {
+    flex: 1;
+    background: #fff;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    padding: 0 32px;
+
+    .ant-tabs-nav {
+      margin-bottom: 20;
+      flex-shrink: 0;
+    }
+
+    .ant-tabs-tab {
+      padding: 16px 20px;
+      font-size: 14px;
+      color: #6b7a8f;
+
+      &:hover {
+        color: #1a2332;
+      }
+    }
+
+    .ant-tabs-tab-active .ant-tabs-tab-btn {
+      color: #0d9b8a !important;
+      font-weight: 500;
+    }
+
+    .ant-tabs-ink-bar {
+      background: #0d9b8a;
+      height: 3px;
+    }
+
+    .ant-tabs-content-holder {
+      flex: 1;
+      overflow: hidden;
+    }
+
+    .ant-tabs-content {
+      height: 100%;
+    }
+
+    .ant-tabs-tabpane {
+      height: 100%;
+      overflow-y: auto;
+      padding: 32px 0 32px;  // 顶部从 24px 改成 32px，拉开距离
+    }
+  }
+}
+
+// ============================================================
+// Tab 内容区
+// ============================================================
+
+.settings-tab {
+  height: 100%;
+
+  &__content {
+    max-width: 640px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    height: 100%;
+  }
+
+  &__field {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+
+    &--readonly {
+      .settings-tab__text {
+        padding: 8px 0;
+        color: #6b7a8f;
+      }
+    }
+
+    &--switch {
+      .settings-tab__switch-row {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+
+      .settings-tab__label {
+        margin-bottom: 0;
+        cursor: pointer;
+      }
+    }
+  }
+
+  &__label {
+    font-size: 14px;
+    font-weight: 500;
+    color: #1a2332;
+    margin-bottom: 0;
+  }
+
+  &__input {
+    padding: 8px 12px;
+    border: 1px solid #dce0e6;
+    border-radius: 6px;
+    font-size: 14px;
+    background: #fff;
+    transition: border-color 0.2s;
+
+    &:focus {
+      outline: none;
+      border-color: #0d9b8a;
+    }
+
+    &--small {
+      width: 80px;
+    }
+  }
+
+  &__textarea {
+    padding: 8px 12px;
+    border: 1px solid #dce0e6;
+    border-radius: 6px;
+    font-size: 14px;
+    background: #fff;
+    resize: vertical;
+    font-family: inherit;
+
+    &:focus {
+      outline: none;
+      border-color: #0d9b8a;
+    }
+  }
+
+  &__input-group {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  &__suffix {
+    font-size: 14px;
+    color: #6b7a8f;
+  }
+
+  &__text {
+    font-size: 14px;
+    color: #3d4a5c;
+    padding: 8px 0;
+    display: block;
+  }
+
+  &__readonly {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 12px;
+    background: #f5f7fa;
+    border-radius: 6px;
+    border: 1px solid #e8ecf1;
+    color: #3d4a5c;
+    font-size: 14px;
+
+    .anticon {
+      color: #b0b8c4;
+      font-size: 14px;
+    }
+  }
+
+  &__readonly-hint {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 12px;
+    background: #fafbfc;
+    border-radius: 6px;
+    border: 1px dashed #dce0e6;
+    color: #b0b8c4;
+    font-size: 13px;
+
+    .anticon {
+      font-size: 14px;
+    }
+  }
+
+  &__hint {
+    font-size: 12px;
+    color: #94a3b8;
+    margin-top: 2px;
+  }
+
+  &__section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 8px;
+    border-bottom: 1px solid #e8ecf1;
+  }
+
+  &__repo-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    flex: 1; // 占满剩余高度，空态虚框可撑满卡片
+  }
+
+  &__repo-placeholder {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 0;
+    text-align: center;
+    color: #b0b8c4;
+    border: 1px dashed #dce0e6;
+    border-radius: 8px;
+    line-height: 1.8;
+  }
+
+  &__repo-item {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding: 12px 16px;
+    border: 1px solid #e8ecf1;
+    border-radius: 8px;
+    background: #fff;
+  }
+
+  &__repo-item-main {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  &__repo-item-icon {
+    font-size: 18px;
+    color: #0d9b8a;
+    flex-shrink: 0;
+  }
+
+  &__repo-item-text {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  &__repo-item-title {
+    font-size: 14px;
+    color: #1a2332;
+  }
+
+  &__repo-item-fullname {
+    font-size: 12px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  &__repo-item-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    padding-left: 28px;
+    font-size: 12px;
+  }
+
+  &__filter-tabs {
+    display: flex;
+    gap: 4px;
+    background: #f5f7fa;
+    padding: 4px;
+    border-radius: 8px;
+    width: fit-content;
+  }
+
+  &__filter-btn {
+    padding: 6px 16px;
+    border: none;
+    background: transparent;
+    border-radius: 6px;
+    font-size: 13px;
+    color: #6b7a8f;
+    cursor: pointer;
+    transition: all 0.2s;
+
+    &:hover {
+      color: #1a2332;
+    }
+
+    &--active {
+      background: #fff;
+      color: #0d9b8a;
+      font-weight: 500;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+    }
+  }
+
+  &__task-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  &__task-placeholder {
+    display: block;
+    padding: 40px 0;
+    text-align: center;
+    color: #b0b8c4;
+  }
+
+  &__task-item {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    padding: 12px 16px;
+    border: 1px solid #e8ecf1;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: border-color 0.2s, box-shadow 0.2s;
+
+    &:hover {
+      border-color: #0d9b8a;
+      box-shadow: 0 2px 8px rgba(13, 155, 138, 0.08);
+    }
+  }
+
+  &__task-item-main {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  &__task-item-title {
+    font-size: 14px;
+    color: #1a2332;
+  }
+
+  &__task-item-meta {
+    display: flex;
+    gap: 16px;
+    font-size: 12px;
+  }
+
+  &__actions {
+    display: flex;
+    gap: 12px;
+    padding-top: 16px;
+    border-top: 1px solid #e8ecf1;
+    margin-top: 8px;
+
+    .ant-btn-primary {
+      background: #0d9b8a;
+      border-color: #0d9b8a;
+
+      &:hover {
+        background: #0b8576;
+        border-color: #0b8576;
+      }
+    }
+  }
+}
+
+// ============================================================
+// 响应式
+// ============================================================
+
+@media (max-width: 768px) {
+  .settings-page {
+    &__header {
+      flex-direction: column;
+      gap: 12px;
+      padding: 16px;
+    }
+
+    &__tabs {
+      padding: 0 16px;
+
+      .ant-tabs-tabpane {
+        height: 100%;
+        overflow-y: auto;
+        padding: 48px 0 32px;  // 从 32px 改成 48px，再往下放一点
+      }
+    }
+  }
+
+  .settings-tab {
+    &__content {
+      max-width: 100%;
+    }
+  }
+}

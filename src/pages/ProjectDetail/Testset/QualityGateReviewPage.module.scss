@@ -1,0 +1,230 @@
+.page {
+  min-height: calc(100vh - 56px);
+  padding: 24px 28px 48px;
+  background: #f4f7fb;
+  color: #12213d;
+}
+
+.header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.title {
+  margin: 0 !important;
+  color: #12213d;
+  font-size: 26px;
+  font-weight: 700;
+}
+
+.subtitle {
+  margin: 8px 0 0;
+  color: #6d7d95;
+  font-size: 14px;
+}
+
+.backLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 16px;
+  color: #5b6b82;
+  font-size: 13px;
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.backLink:hover {
+  color: #0d9b9b;
+}
+
+.content {
+  background: #fff;
+  border: 1px solid #e8edf3;
+  border-radius: 10px;
+  padding: 20px 24px;
+}
+
+.state {
+  display: flex;
+  justify-content: center;
+  padding: 64px 0;
+}
+
+.sectionHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+.checkList {
+  margin: 0;
+}
+
+.checkItem {
+  padding: 12px 0 !important;
+  border-bottom: 1px solid #eef2f6;
+}
+
+.checkItem:last-child {
+  border-bottom: 0;
+}
+
+.checkItemInner {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  width: 100%;
+}
+
+.checkInfo {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.checkMeta {
+  font-size: 12px;
+}
+
+.statusIconPass {
+  color: #16a34a;
+  font-size: 20px;
+  flex-shrink: 0;
+}
+
+.statusIconFail {
+  color: #dc2626;
+  font-size: 20px;
+  flex-shrink: 0;
+}
+
+.statusIconPending {
+  color: #94a3b8;
+  font-size: 20px;
+  flex-shrink: 0;
+}
+
+.runRow {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-top: 16px;
+}
+
+@media (max-width: 900px) {
+  .runRow {
+    grid-template-columns: 1fr;
+  }
+}
+
+.runColumn {
+  display: flex;
+  flex-direction: column;
+}
+
+.runCard {
+  border-radius: 10px;
+}
+
+// 历史记录卡片固定高度
+.historyCard {
+  height: 520px;
+  display: flex;
+  flex-direction: column;
+}
+
+.runCardTitle {
+  margin: 0 0 12px !important;
+}
+
+.currentRunList {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.currentRunItem {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  background: #f7f9fc;
+  border-radius: 8px;
+}
+
+.sideHint {
+  display: block;
+  margin-bottom: 12px;
+  font-size: 12px;
+}
+
+.recentRunItem {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+}
+
+.recentRunStatus {
+  margin-left: auto;
+}
+
+// 历史列表项可点击
+:global(.ant-list-item) {
+  cursor: pointer;
+  transition: background-color 0.2s;
+
+  &:hover {
+    background-color: #f0f7f7;
+  }
+}
+
+// 选中项高亮
+.selectedListItem {
+  background-color: #e6f5f5 !important;
+  border-left: 3px solid #0d9b9b;
+
+  &:hover {
+    background-color: #d4eded !important;
+  }
+}
+
+// 历史卡片的 Card body 撑满整个卡片
+.historyCard :global(.ant-card-body) {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+
+// 历史列表滚动容器
+.historyListScroll {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  padding-right: 4px;
+
+  &::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 3px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: #c1c1c1;
+    border-radius: 3px;
+
+    &:hover {
+      background: #a8a8a8;
+    }
+  }
+}

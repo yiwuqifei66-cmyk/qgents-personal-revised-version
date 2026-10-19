@@ -1,0 +1,156 @@
+.my-teams {
+  padding: 28px 32px 48px;
+  max-width: 1100px;
+  margin: 0 auto;
+  color: var(--qg-text-on-dark);
+}
+
+.my-teams__header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 28px;
+  flex-wrap: wrap;
+}
+
+.my-teams h1 {
+  margin: 0 0 6px;
+  font-size: 28px;
+}
+
+.my-teams__header p {
+  margin: 0;
+  color: var(--qg-text-on-dark-secondary);
+}
+
+.my-teams__actions {
+  display: flex;
+  gap: 10px;
+}
+
+.my-teams__btn {
+  display: inline-flex;
+  align-items: center;
+  height: 38px;
+  padding: 0 16px;
+  border-radius: var(--qg-radius-sm);
+  font-weight: 600;
+  font-size: 13px;
+}
+
+.my-teams__btn--ghost {
+  border: 1px solid var(--qg-border-dark);
+  color: var(--qg-text-on-dark);
+}
+
+.my-teams__btn--ghost:hover {
+  border-color: rgba(255, 255, 255, 0.25);
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.my-teams__btn--primary {
+  background: var(--qg-blue);
+  color: #fff;
+}
+
+.my-teams__btn--primary:hover {
+  background: var(--qg-blue-hover);
+}
+
+.my-teams__section {
+  margin-bottom: 28px;
+}
+
+.my-teams__section h2 {
+  margin: 0 0 14px;
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--qg-text-on-dark-secondary);
+}
+
+.my-teams__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 14px;
+}
+
+.my-teams__card {
+  background: var(--qg-navy-card);
+  border: 1px solid var(--qg-border-dark);
+  border-radius: 12px;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-height: 150px;
+}
+
+.my-teams__card-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.my-teams__logo {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  color: #fff;
+  font-weight: 700;
+}
+
+.my-teams__logo--img {
+  object-fit: cover;
+  background: transparent;
+}
+
+.my-teams__role {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--qg-blue);
+  background: rgba(59, 130, 246, 0.15);
+  padding: 3px 8px;
+  border-radius: 999px;
+}
+
+.my-teams__card h3 {
+  margin: 4px 0 0;
+  font-size: 16px;
+}
+
+.my-teams__meta {
+  margin: 0;
+  font-size: 12px;
+  color: var(--qg-text-on-dark-secondary);
+  flex: 1;
+}
+
+.my-teams__detail {
+  align-self: flex-end;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--qg-teal-bright);
+}
+
+.my-teams__card--create {
+  border-style: dashed;
+  align-items: center;
+  justify-content: center;
+  color: var(--qg-text-on-dark-secondary);
+  font-weight: 600;
+  text-decoration: none;
+  gap: 6px;
+}
+
+.my-teams__card--create span {
+  font-size: 22px;
+  line-height: 1;
+}
+
+.my-teams__card--create:hover {
+  border-color: var(--qg-blue);
+  color: var(--qg-text-on-dark);
+}

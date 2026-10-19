@@ -1,0 +1,300 @@
+/* ──── 共享 Memory 页（浅色主题，与项目设置页视觉一致）──── */
+
+.memory-page {
+  min-height: 100%;
+  box-sizing: border-box;
+  padding: 24px 32px 32px;
+  background: var(--qg-bg-light);
+}
+
+.memory-page__header {
+  margin-bottom: 16px;
+}
+
+.memory-page__title {
+  margin: 0 0 4px;
+  font-weight: 600;
+  color: var(--qg-text-primary);
+}
+
+.memory-page__desc {
+  margin: 0;
+  font-size: 14px;
+  color: var(--qg-text-secondary);
+}
+
+.memory-page__toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.memory-page__filter {
+  width: 128px;
+}
+
+.memory-page__workspace {
+  display: grid;
+  grid-template-columns: minmax(0, 1.45fr) minmax(300px, 0.85fr);
+  align-items: start;
+  gap: 20px;
+}
+
+.memory-page__list-panel,
+.memory-detail {
+  min-width: 0;
+  border: 1px solid var(--qg-border-light);
+  border-radius: 8px;
+  background: var(--qg-card);
+}
+
+@media (min-width: 901px) {
+  .memory-page__workspace {
+    height: calc(100dvh - 220px);
+    min-height: 420px;
+    overflow: hidden;
+  }
+
+  .memory-page__list-panel,
+  .memory-detail {
+    min-height: 0;
+    height: 100%;
+    overflow-y: auto;
+  }
+}
+
+.memory-page__list-panel {
+  padding: 8px;
+}
+
+.memory-page__list-heading {
+  display: flex;
+  justify-content: space-between;
+  padding: 8px 12px 12px;
+  color: var(--qg-text-secondary);
+  font-size: 13px;
+}
+
+.memory-page__list {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+/* ──── 列表卡片 ──── */
+
+.memory-card {
+  border: 1px solid transparent;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.memory-card:hover {
+  border-color: var(--qg-border-light);
+  background: var(--qg-bg-light);
+  box-shadow: none;
+}
+
+.memory-card--selected {
+  border-color: var(--qg-teal);
+  background: color-mix(in srgb, var(--qg-teal) 7%, white);
+}
+
+.memory-card .ant-card-body {
+  padding: 16px 20px;
+}
+
+.memory-card__main {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+}
+
+.memory-card__left {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  min-width: 0;
+  flex: 1;
+}
+
+.memory-card__name-wrap {
+  min-width: 0;
+}
+
+.memory-card__name {
+  display: block;
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--qg-text-primary);
+}
+
+.memory-card__content {
+  margin: 2px 0 0 !important;
+  font-size: 13px;
+  color: var(--qg-text-secondary);
+}
+
+.memory-card__right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-shrink: 0;
+}
+
+.memory-card__creator {
+  font-size: 12px;
+  color: var(--qg-text-muted);
+}
+
+.memory-card__tags {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  flex-wrap: wrap;
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 1px solid var(--qg-border-light);
+}
+
+.memory-card__category {
+  color: var(--qg-text-secondary);
+}
+
+.memory-card__source {
+  margin-left: auto;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 12px;
+  color: var(--qg-text-muted);
+}
+
+/* ──── 详情栏 ──── */
+
+.memory-detail {
+  align-self: start;
+  min-height: 360px;
+}
+
+.memory-detail--empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 32px;
+  text-align: center;
+}
+
+.memory-detail__empty-icon {
+  color: var(--qg-teal);
+  font-size: 28px;
+}
+
+.memory-detail__header {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 18px 20px 14px;
+  border-bottom: 1px solid var(--qg-border-light);
+}
+
+.memory-detail__title {
+  display: block;
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--qg-text-primary);
+}
+
+.memory-detail__meta {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 8px;
+  font-size: 12px;
+}
+
+.memory-detail__body {
+  padding: 20px;
+}
+
+.memory-detail__tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin-bottom: 16px;
+}
+
+.memory-detail__content {
+  margin-bottom: 20px !important;
+  color: var(--qg-text-primary);
+  white-space: pre-wrap;
+}
+
+.memory-detail__provenance {
+  color: var(--qg-text-secondary);
+  font-size: 12px;
+  line-height: 1.9;
+}
+
+.memory-detail__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 20px;
+  padding-top: 16px;
+  border-top: 1px solid var(--qg-border-light);
+}
+
+@media (max-width: 900px) {
+  .memory-page {
+    padding: 20px;
+  }
+
+  .memory-page__workspace {
+    grid-template-columns: 1fr;
+  }
+
+  .memory-detail {
+    position: static;
+  }
+}
+
+@media (max-width: 600px) {
+  .memory-page__toolbar {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .memory-page__toolbar .ant-space {
+    width: 100%;
+  }
+
+  .memory-page__toolbar .ant-space-item {
+    flex: 1;
+  }
+
+  .memory-page__toolbar .ant-btn {
+    width: 100%;
+  }
+
+  .memory-card__main {
+    align-items: flex-start;
+  }
+
+  .memory-card__right {
+    align-items: flex-end;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .memory-card__source {
+    width: 100%;
+    margin-left: 0;
+  }
+}

@@ -1,0 +1,68 @@
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+node_modules
+dist
+dist-ssr
+*.local
+.env
+.env.*
+!.env.example
+!.env.test
+.agents/
+.codex/
+.claude/
+.impeccable/
+.cache/
+.vite/
+coverage/
+*.tsbuildinfo
+
+# Editor directories and files
+.vscode/*
+!.vscode/extensions.json
+.idea
+.DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# Local presentation artifacts and historical test output
+/_ppt_render/
+/_ppt_render_final/
+/Qgents_项目答辩汇报_*.pptx
+/.test-*.txt
+
+# Local-only reviews, session notes and superseded implementation plans
+/docs/project-assessment-2026-10-15.md
+/docs/chat-switch-unread-realtime-review-2026-10-15.md
+/docs/chat-004-investigation-and-plan-2026-10-18.md
+/docs/backend-security-remediation.md
+/docs/HANDOFF.md
+/docs/frontend/frontend-implementation-defense.md
+/docs/frontend/testset-backend-needs.md
+/docs/frontend/code-branch-backend-gaps.md
+/docs/GitHub集成联调-前端确认回复.md
+/docs/specs/2026-08-12-requirement-chat-mvp-design.md
+/docs/api/archive/
+/docs/api/drafts/
+/README/分支管理前后端执行计划.md
+/README/TestRun失败根因分析与后端修复方案.md
+/README/TestRun和DryRun列表接口后端开发任务.md
+/README/MR占位.md
+/README/Dry Run前后端执行计划(1).md
+/README/后端需要补充的预检和MR链路改动.md
+/README/后端任务状态机与自动DryRun实施指南.md
+/README/前端仓库管理改动说明(1).md
+/README/统一创建MR自动预检修改计划(3).md
+
+# Empty legacy gitlink; this frontend has no Git submodules
+/qgents/

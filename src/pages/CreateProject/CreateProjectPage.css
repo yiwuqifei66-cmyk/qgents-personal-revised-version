@@ -1,0 +1,114 @@
+.create-project {
+  max-width: 640px;
+  margin: 0 auto;
+  padding: 28px 32px 48px;
+  color: var(--qg-text-on-dark);
+}
+
+.create-project__back {
+  display: inline-block;
+  margin-bottom: 16px;
+  color: var(--qg-text-on-dark-secondary);
+  font-size: 13px;
+}
+
+.create-project h1 {
+  margin: 0 0 8px;
+  font-size: 28px;
+}
+
+.create-project__meta {
+  margin: 0 0 20px;
+  color: var(--qg-text-on-dark-secondary);
+  font-size: 13px;
+}
+
+.create-project__meta code {
+  font-family: ui-monospace, monospace;
+  background: var(--qg-navy-card);
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+
+.create-project__error {
+  background: rgba(239, 68, 68, 0.1);
+  border: 1px solid rgba(239, 68, 68, 0.25);
+  border-radius: 8px;
+  padding: 10px 14px;
+  color: #ef4444;
+  font-size: 13px;
+}
+
+.create-project__card {
+  background: var(--qg-navy-card);
+  border: 1px solid var(--qg-border-dark);
+  border-radius: 14px;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.create-project__field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.create-project__field input,
+.create-project__field textarea {
+  border: 1px solid var(--qg-border-dark);
+  border-radius: 8px;
+  background: var(--qg-navy-3);
+  color: var(--qg-text-on-dark);
+  padding: 10px 12px;
+  font-weight: 400;
+}
+
+.create-project__field input:disabled,
+.create-project__field textarea:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+}
+
+.create-project__actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 8px;
+}
+
+.create-project__btn {
+  display: inline-flex;
+  align-items: center;
+  height: 38px;
+  padding: 0 16px;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 13px;
+  border: none;
+  text-decoration: none;
+}
+
+.create-project__btn--ghost {
+  border: 1px solid var(--qg-border-dark);
+  color: var(--qg-text-on-dark);
+  background: transparent;
+}
+
+.create-project__btn--ghost:hover {
+  border-color: rgba(255, 255, 255, 0.25);
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.create-project__btn--primary {
+  background: var(--qg-blue);
+  color: #fff;
+  cursor: pointer;
+}
+
+.create-project__btn--primary:hover:not(:disabled) {
+  background: var(--qg-blue-hover);
+}

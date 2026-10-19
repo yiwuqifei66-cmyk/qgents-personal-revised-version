@@ -1,0 +1,116 @@
+/* ──── 共享 Skill 页（浅色主题，与项目设置页视觉一致）──── */
+
+.skill-page {
+  min-height: 100%;
+  padding: 24px 32px 32px;
+  background: var(--qg-bg-light);
+}
+
+.skill-page__header {
+  margin-bottom: 16px;
+}
+
+.skill-page__title {
+  margin: 0 0 4px;
+  font-weight: 600;
+  color: var(--qg-text-primary);
+}
+
+.skill-page__desc {
+  margin: 0;
+  font-size: 14px;
+  color: var(--qg-text-secondary);
+}
+
+.skill-page__toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.skill-page__list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+/* ──── 列表卡片 ──── */
+
+.skill-card {
+  border: 1px solid var(--qg-border-light);
+  border-radius: 8px;
+  cursor: pointer;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.skill-card:hover {
+  border-color: var(--qg-teal);
+  box-shadow: 0 4px 16px rgba(17, 24, 39, 0.1);
+}
+
+.skill-card .ant-card-body {
+  padding: 16px 20px;
+}
+
+.skill-card__main {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+}
+
+.skill-card__left {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  min-width: 0;
+  flex: 1;
+}
+
+.skill-card__index {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--qg-text-muted);
+  line-height: 22px;
+  flex-shrink: 0;
+}
+
+.skill-card__name-wrap {
+  min-width: 0;
+}
+
+.skill-card__name {
+  display: block;
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--qg-text-primary);
+}
+
+.skill-card__content {
+  margin: 2px 0 0 !important;
+  font-size: 13px;
+  color: var(--qg-text-secondary);
+}
+
+.skill-card__right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-shrink: 0;
+}
+
+.skill-card__creator {
+  font-size: 12px;
+  color: var(--qg-text-muted);
+}
+
+.skill-card__tags {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  flex-wrap: wrap;
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 1px solid var(--qg-border-light);
+}

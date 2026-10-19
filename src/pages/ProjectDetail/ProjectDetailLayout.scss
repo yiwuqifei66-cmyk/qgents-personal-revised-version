@@ -1,0 +1,414 @@
+// ══════════════════════════════════════════════
+// 项目详情页布局：左侧固定导航 + 右侧内容区
+// ══════════════════════════════════════════════
+
+.pd {
+  display: grid;
+  grid-template-columns: 264px 6px minmax(0, 1fr);
+  height: calc(100vh - var(--qg-banner-h));
+  background: var(--qg-bg-light);
+}
+
+// ──── 拖拽手柄（左侧栏与内容区之间的分隔）────
+
+.pd-resizer {
+  position: relative;
+  cursor: col-resize;
+  background: transparent;
+  transition: background 0.15s ease;
+}
+
+// 居中的抓手指示线，提示此处可拖拽
+.pd-resizer::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 2px;
+  height: 36px;
+  border-radius: 1px;
+  background: rgba(255, 255, 255, 0.16);
+  transition: background 0.15s ease, height 0.2s ease;
+}
+
+.pd-resizer:hover,
+.pd-resizer:active {
+  background: rgba(13, 155, 138, 0.12);
+}
+
+.pd-resizer:hover::before,
+.pd-resizer:active::before {
+  height: 52px;
+  background: var(--qg-teal-bright);
+}
+
+// ──── 左侧导航栏 ────
+
+.pd-nav {
+  display: flex;
+  flex-direction: column;
+  background: linear-gradient(180deg, #101827 0%, #111c2c 100%);
+  border-right: 1px solid rgba(255, 255, 255, 0.07);
+  padding: 14px 10px 12px;
+  color: var(--qg-text-on-dark);
+  overflow-y: auto;
+}
+
+.pd-nav__project {
+  position: relative;
+  margin: 0 2px 16px;
+  padding: 12px 12px 11px;
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.035);
+  box-shadow: inset 0 1px rgba(255, 255, 255, 0.025);
+}
+
+.pd-nav__project-label {
+  display: block;
+  font-size: 10px;
+  color: #8290a6;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-bottom: 4px;
+}
+
+.pd-nav__project-name {
+  font-size: 14px;
+  font-weight: 650;
+  line-height: 1.3;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  display: block;
+}
+
+// ──── 主导航菜单 ────
+
+.pd-nav__menu {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  margin: 0 2px 16px;
+  padding-bottom: 15px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+}
+
+.pd-nav__item {
+  display: flex;
+  align-items: center;
+  position: relative;
+  gap: 9px;
+  padding: 8px 10px;
+  border-radius: 7px;
+  font-size: 13px;
+  font-weight: 500;
+  color: #9aa8bb;
+  text-decoration: none;
+  transition: background 0.16s ease, color 0.16s ease;
+}
+
+.pd-nav__item:hover {
+  background: rgba(255, 255, 255, 0.055);
+  color: #edf3fa;
+}
+
+.pd-nav__item.is-active {
+  background: rgba(72, 143, 214, 0.16);
+  color: #e5f1ff;
+  font-weight: 600;
+}
+
+.pd-nav__item.is-active::before {
+  position: absolute;
+  top: 8px;
+  bottom: 8px;
+  left: -2px;
+  width: 2px;
+  border-radius: 0 2px 2px 0;
+  background: #72b7ff;
+  content: '';
+}
+
+.pd-nav__icon {
+  flex-shrink: 0;
+  opacity: 0.75;
+}
+
+.pd-nav__item.is-active .pd-nav__icon {
+  opacity: 1;
+}
+
+.pd-nav__label {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.pd-nav__badge {
+  flex-shrink: 0;
+  min-width: 18px;
+  height: 18px;
+  padding: 0 5px;
+  border-radius: 9px;
+  background: var(--qg-danger);
+  color: #fff;
+  font-size: 11px;
+  font-weight: 700;
+  line-height: 18px;
+  text-align: center;
+}
+
+// ──── 需求列表 ────
+
+.pd-nav__branches {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.pd-nav__branches-head {
+  padding: 1px 10px 8px;
+  font-size: 10px;
+  color: #8290a6;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-weight: 600;
+}
+
+.pd-nav__search {
+  margin: 0 2px 10px;
+
+  .ant-input-affix-wrapper {
+    border-color: rgba(255, 255, 255, 0.08);
+    border-radius: 7px;
+    background: rgba(255, 255, 255, 0.045);
+    box-shadow: none;
+    color: #dce6f2;
+  }
+
+  .ant-input-affix-wrapper:hover,
+  .ant-input-affix-wrapper-focused {
+    border-color: rgba(114, 183, 255, 0.6);
+    background: rgba(255, 255, 255, 0.065);
+  }
+
+  .ant-input {
+    color: #dce6f2;
+  }
+
+  .ant-input::placeholder,
+  .anticon {
+    color: #718198;
+  }
+}
+
+.pd-nav__branches-subhead {
+  padding: 8px 10px 4px;
+  font-size: 11px;
+  color: var(--qg-text-on-dark-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-weight: 600;
+  list-style: none;
+}
+
+.pd-nav__empty {
+  padding: 12px 10px;
+  font-size: 12px;
+  color: var(--qg-text-on-dark-secondary);
+  text-align: center;
+  list-style: none;
+}
+
+.pd-nav__branch-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  flex: 1;
+  overflow-y: auto;
+}
+
+.pd-nav__branch {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 10px;
+  border-radius: 7px;
+  font-size: 13px;
+  color: #9aa8bb;
+  text-decoration: none;
+  transition: background 0.16s ease, color 0.16s ease;
+}
+
+/* 群聊列表项：NavLink + 置顶按钮（悬停显示） */
+.pd-nav__branch-item {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+
+  .pd-nav__branch {
+    flex: 1;
+    min-width: 0;
+  }
+}
+
+.pd-nav__branch-pin-btn {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4px;
+  border: 0;
+  background: transparent;
+  border-radius: 4px;
+  color: var(--qg-text-on-dark-secondary);
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity 0.15s ease, color 0.15s ease, background 0.15s ease;
+
+  &:hover {
+    color: #f59e0b;
+    background: rgba(255, 255, 255, 0.08);
+  }
+
+  &.is-pinned {
+    opacity: 1;
+    color: #f59e0b;
+  }
+}
+
+.pd-nav__branch-item:hover .pd-nav__branch-pin-btn {
+  opacity: 1;
+}
+
+.pd-nav__branch:hover {
+  background: rgba(255, 255, 255, 0.055);
+  color: #edf3fa;
+}
+
+.pd-nav__branch.is-active {
+  background: rgba(72, 143, 214, 0.16);
+  color: #e5f1ff;
+}
+
+.pd-nav__branch-hash {
+  flex-shrink: 0;
+  color: #7489a2;
+  font-weight: 600;
+  font-size: 14px;
+}
+
+.pd-nav__branch.is-active .pd-nav__branch-hash {
+  color: #8cc5ff;
+}
+
+.pd-nav__branch-text {
+  min-width: 0;
+  flex: 1;
+}
+
+.pd-nav__branch-title-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  min-width: 0;
+}
+
+.pd-nav__branch-pin {
+  flex-shrink: 0;
+  font-size: 11px;
+  color: var(--qg-teal-bright);
+}
+
+.pd-nav__branch-title {
+  flex: 1;
+  min-width: 0;
+  display: block;
+  font-size: 13px;
+  line-height: 1.4;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* 项目总群标记 —— 小圆角标签，与需求群区分 */
+.pd-nav__branch-main-tag {
+  flex-shrink: 0;
+  padding: 0 5px;
+  border: 1px solid rgba(34, 197, 94, 0.45);
+  border-radius: 4px;
+  background: rgba(34, 197, 94, 0.12);
+  color: var(--qg-mint);
+  font-size: 10px;
+  font-weight: 600;
+  line-height: 16px;
+  white-space: nowrap;
+}
+
+.pd-nav__branch-unread {
+  flex-shrink: 0;
+  min-width: 18px;
+  height: 18px;
+  padding: 0 5px;
+  border-radius: 9px;
+  background: var(--qg-danger);
+  color: #fff;
+  font-size: 11px;
+  font-weight: 700;
+  line-height: 18px;
+  text-align: center;
+}
+
+.pd-nav__branch-ref {
+  display: block;
+  margin-top: 1px;
+  font-size: 11px;
+  color: var(--qg-text-on-dark-secondary);
+}
+
+.pd-nav__branch-summary {
+  display: block;
+  margin-top: 1px;
+  font-size: 11px;
+  color: var(--qg-text-on-dark-secondary);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.pd-nav__new-branch-chat {
+  margin: 10px 2px 0;
+  padding: 8px 10px;
+  border: 0;
+  border-radius: 7px;
+  background: rgba(255, 255, 255, 0.045);
+  font-size: 13px;
+  color: #9fb3ca;
+  text-align: left;
+  cursor: pointer;
+  transition: background 0.16s ease, color 0.16s ease;
+}
+
+.pd-nav__new-branch-chat:hover {
+  background: rgba(72, 143, 214, 0.14);
+  color: #d9ecff;
+}
+
+// ──── 右侧主内容区 ────
+
+.pd-main {
+  min-width: 0;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  background: #fff;
+  overflow-y: auto;
+}

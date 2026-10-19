@@ -1,0 +1,90 @@
+.page { min-height: 100%; padding: clamp(14px, 0.8vw + 8px, 28px) clamp(14px, 0.8vw + 12px, 32px) clamp(20px, 1.2vw + 14px, 40px); color: #10234d; background: #fff; }
+.header, .titleRow, .detailHeader, .detailTitle, .usageGrid, .scopeGrid, .actionRow { display: flex; align-items: center; }
+.header { justify-content: space-between; gap: clamp(12px, 0.4vw + 8px, 20px); }
+.titleRow { gap: 10px; }
+.title { margin: 0 !important; color: #10234d !important; font-size: clamp(18px, 0.7vw + 12px, 24px); }
+.subtitle { margin: 3px 0 0 !important; color: #60759f !important; font-size: clamp(12px, 0.1vw + 11px, 14px); }
+.info { color: #6a80a8; font-size: clamp(11px, 0.1vw + 10px, 12px); }
+.headerActions { display: flex; align-items: center; gap: clamp(8px, 0.3vw + 6px, 10px); }
+.addButton { color: #fff !important; background: #086c86 !important; border-color: #086c86 !important; }
+.notice { margin: clamp(14px, 0.6vw + 10px, 22px) 0 clamp(10px, 0.6vw + 6px, 18px); padding: clamp(8px, 0.4vw + 4px, 11px) clamp(10px, 0.4vw + 8px, 14px); color: #3f5c8e; background: #f5f8fc; border: 1px solid #e1e8f3; border-radius: 6px; font-size: clamp(11px, 0.1vw + 10px, 12px); }
+.noticeIcon { margin-right: 8px; color: #1769da; }
+.layout { display: grid; grid-template-columns: minmax(0, 1fr) clamp(240px, 18vw + 56px, 340px); gap: 0; height: clamp(440px, calc(100dvh - var(--qg-banner-h, 56px) - clamp(96px, 4vw + 108px, 168px)), 1060px); border: 1px solid #e0e7f0; border-radius: 6px; overflow: hidden; }
+.listPane { display: grid; grid-template-rows: 1fr; min-width: 0; min-height: 0; overflow: hidden; }
+.tableWrap { position: relative; min-width: 0; min-height: 0; overflow: auto; overscroll-behavior: contain; scrollbar-width: thin; }
+.tableWrap::-webkit-scrollbar { width: 8px; height: 8px; }
+.tableWrap::-webkit-scrollbar-thumb { background: #c4d3e6; border-radius: 4px; }
+.tableWrap::-webkit-scrollbar-thumb:hover { background: #9fb2cc; }
+.table { width: 100%; min-width: 710px; border-collapse: separate; border-spacing: 0; font-size: clamp(12px, 0.2vw + 10px, 13px); }
+.table thead th { position: sticky; top: 0; z-index: 2; box-shadow: inset 0 -1px 0 #e0e7f0; }
+.table th { padding: clamp(9px, 0.3vw + 6px, 13px) clamp(7px, 0.2vw + 5px, 9px); color: #182955; font-weight: 650; text-align: left; background: #f8fafd; border-bottom: 1px solid #e0e7f0; white-space: nowrap; }
+.table td { padding: clamp(8px, 0.3vw + 5px, 12px) clamp(7px, 0.2vw + 5px, 9px); vertical-align: middle; border-bottom: 1px solid #edf1f6; background: #fff; }
+.table tr { cursor: pointer; transition: background .15s ease; }
+.table tr:hover { background: #f7fbff; }
+.table tr.selected { outline: 2px solid #4c8dff; outline-offset: -2px; background: #f3f8ff; }
+.agentCell { display: flex; align-items: center; gap: clamp(6px, 0.3vw + 4px, 9px); min-width: 165px; }
+.avatar { flex: 0 0 auto; color: #fff; background: #4d32d6; }
+.agentName { color: #172a59; font-weight: 650; }
+.description { max-width: 190px; margin-top: 2px; color: #7084a8; font-size: clamp(11px, 0.1vw + 10px, 12px); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.tag { margin-inline-end: 0; }
+.status { border: 0; }
+.statusRunning { color: #078c5e; background: #e8f8f0; }
+.statusIdle { color: #9a6400; background: #fff4d5; }
+.statusArchived { color: #65738b; background: #edf0f4; }
+.stat { white-space: nowrap; }
+.muted { color: #7890b6; }
+.empty { display: flex; align-items: center; justify-content: center; min-height: 0; padding: clamp(28px, 2vw + 16px, 52px) clamp(16px, 0.5vw + 12px, 24px); color: #7184a5; text-align: center; }
+.explanation { padding: clamp(8px, 0.4vw + 4px, 13px) 0 0; color: #60759f; font-size: clamp(11px, 0.1vw + 10px, 12px); }
+.detailPane { min-width: 0; min-height: 0; border-left: 1px solid #2b496f; background: #203759; color: #95abc8; }
+.detailHeader { justify-content: space-between; padding: clamp(12px, 0.4vw + 8px, 18px) clamp(14px, 0.5vw + 10px, 20px) clamp(8px, 0.4vw + 4px, 12px); }
+.detailTitle { min-width: 0; gap: 10px; }
+.detailName { overflow: hidden; color: #172a59; font-weight: 650; text-overflow: ellipsis; white-space: nowrap; font-size: clamp(14px, 0.5vw + 9px, 16px); }
+.detailClose { color: #415778; }
+.tabs { display: flex; padding: 0 clamp(10px, 0.4vw + 6px, 14px); border-bottom: 1px solid #e0e7f0; overflow-x: auto; }
+.tab { padding: clamp(6px, 0.3vw + 4px, 9px) clamp(8px, 0.2vw + 6px, 10px); color: #6a7da1; border: 0; border-bottom: 2px solid transparent; background: transparent; white-space: nowrap; cursor: pointer; transition: color .15s ease, background .15s ease; font-size: clamp(11px, 0.1vw + 10px, 12px); }
+.tab:hover { color: #1677ff; background: #f3f8ff; }
+.tabActive { color: #1677ff; border-bottom-color: #1677ff; font-weight: 650; }
+.detailBody { padding: clamp(14px, 0.5vw + 10px, 20px); }
+.sectionTitle { margin: 0 0 clamp(10px, 0.3vw + 6px, 14px); color: #172a59; font-size: clamp(13px, 0.2vw + 10px, 14px); }
+.descriptionText { color: #53698e; line-height: 1.65; font-size: clamp(11px, 0.1vw + 10px, 12px); }
+.infoGrid { display: grid; grid-template-columns: clamp(80px, 6vw + 40px, 100px) 1fr; gap: clamp(8px, 0.4vw + 4px, 12px) clamp(8px, 0.3vw + 5px, 10px); margin: 0 0 clamp(14px, 0.6vw + 8px, 20px); font-size: clamp(11px, 0.1vw + 10px, 13px); }
+.infoGrid dt { color: #7184a5; }
+.infoGrid dd { margin: 0; color: #1c2e5b; }
+.usageCard, .detailCard, .scopeCard { padding: clamp(10px, 0.4vw + 6px, 14px); border: 1px solid #e4eaf2; border-radius: 6px; background: #fbfcfe; }
+.usageCard { margin-bottom: clamp(12px, 0.6vw + 6px, 18px); }
+.usageGrid { justify-content: space-between; align-items: flex-start; gap: 10px; }
+.usageLabel { color: #7184a5; font-size: clamp(11px, 0.1vw + 10px, 12px); }
+.usageValue { margin-top: 7px; color: #1c2e5b; font-weight: 650; font-size: clamp(13px, 0.2vw + 10px, 14px); }
+.success { color: #078c5e; }
+.detailCard + .detailCard { margin-top: clamp(12px, 0.6vw + 6px, 18px); }
+.detailList { margin: 0; padding-left: 18px; color: #53698e; line-height: 1.8; font-size: clamp(11px, 0.1vw + 10px, 12px); }
+.actionRow { flex-wrap: wrap; gap: 8px; margin-bottom: clamp(10px, 0.5vw + 6px, 16px); }
+.tabsEmpty { padding: clamp(16px, 0.6vw + 10px, 26px) clamp(10px, 0.4vw + 6px, 14px); color: #7386a8; text-align: center; border: 1px dashed #d7e0ed; border-radius: 6px; font-size: clamp(11px, 0.1vw + 10px, 12px); }
+.scopeSection { margin-top: clamp(14px, 0.6vw + 8px, 22px); }
+.scopeHeading { margin: 0 0 clamp(8px, 0.4vw + 4px, 12px); color: #172a59; font-size: clamp(13px, 0.4vw + 9px, 16px); }
+.scopeGrid { align-items: stretch; gap: clamp(10px, 0.4vw + 6px, 16px); }
+.scopeCard { flex: 1; color: #5e7398; line-height: 1.6; font-size: clamp(11px, 0.1vw + 10px, 12px); }
+.scopeCard strong { display: block; margin-bottom: 8px; color: #1c2e5b; font-size: clamp(12px, 0.2vw + 10px, 13px); }
+.scopeCard p { margin: 0; }
+.error { padding: clamp(12px, 0.5vw + 6px, 18px); color: #a33a35; background: #fff3f2; border: 1px solid #ffd6d2; border-radius: 6px; font-size: clamp(11px, 0.1vw + 10px, 12px); }
+@media (max-width: 1199px) { .layout { display: block; height: auto; } .listPane { display: block; overflow: visible; } .tableWrap { overflow: visible; } .table thead th { position: static; box-shadow: none; } .detailPane { border-top: 1px solid #2b496f; border-left: 0; max-height: clamp(360px, 55dvh, 560px); } }
+@media (max-width: 767px) {
+  .page { padding: 18px 14px 28px; }
+  .header { align-items: flex-start; flex-direction: column; }
+  .headerActions { width: 100%; }
+  .addButton { flex: 1; }
+  .layout { border: 0; }
+  .table, .table thead, .table tbody, .table tr, .table td { display: block; }
+  .table { min-width: 0; }
+  .table thead { display: none; }
+  .table thead th { position: static; box-shadow: none; }
+  .table tr { margin-bottom: 10px; padding: 13px; border: 1px solid #e0e7f0; border-radius: 6px; }
+  .table tr.selected { outline-offset: 0; }
+  .table td { display: flex; justify-content: space-between; gap: 16px; padding: 5px 0; border: 0; }
+  .table td:first-child { display: block; padding-bottom: 9px; }
+  .table td:not(:first-child)::before { content: attr(data-label); color: #7184a5; }
+  .agentCell { min-width: 0; }
+  .description { max-width: calc(100vw - 120px); }
+  .scopeGrid { flex-direction: column; }
+  .detailHeader, .detailBody { padding-inline: 14px; }
+}

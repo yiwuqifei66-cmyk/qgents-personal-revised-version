@@ -1,0 +1,616 @@
+.team-detail {
+  /* 固定高度铺满内容区，整页不滚动；只有中间主栏（项目/通讯录）内部滚动 */
+  height: 100%;
+  overflow: hidden;
+  display: grid;
+  grid-template-columns: 248px minmax(0, 1fr) 360px;
+  background: #f8fafc;
+  color: var(--qg-text-primary);
+}
+
+.team-detail--centered {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 120px 32px;
+}
+
+.team-detail__sidebar {
+  background: var(--qg-navy);
+  border-right: 1px solid rgba(255, 255, 255, 0.08);
+  padding: 22px 12px 28px;
+  color: var(--qg-text-on-dark);
+  min-height: 0;
+}
+
+.team-detail__team-card {
+  display: grid;
+  grid-template-columns: 46px 1fr;
+  gap: 12px;
+  align-items: center;
+  padding: 10px 10px 18px;
+}
+
+.team-detail__team-logo {
+  width: 46px;
+  height: 46px;
+  border-radius: 8px;
+  display: grid;
+  place-items: center;
+  background: linear-gradient(135deg, var(--qg-teal), #047481);
+  color: #ffffff;
+  font-size: 22px;
+  font-weight: 800;
+}
+
+/* 团队头像图片：圆形裁切，覆盖渐变占位 */
+.team-detail__team-logo--img {
+  width: 46px;
+  height: 46px;
+  object-fit: cover;
+  border-radius: 50%;
+  background: transparent;
+  font-size: 0;
+}
+
+.team-detail__team-card h2 {
+  margin: 0 0 4px;
+  font-size: clamp(15px, 0.4vw + 13px, 18px);
+}
+
+.team-detail__team-card p {
+  margin: 0;
+  color: var(--qg-text-on-dark-secondary);
+  font-size: clamp(11px, 0.2vw + 11px, 13px);
+  line-height: 1.5;
+}
+
+.team-detail__team-role {
+  grid-column: 2;
+  justify-self: start;
+  padding: 3px 9px;
+  border-radius: 6px;
+  background: rgba(20, 184, 166, 0.14);
+  color: var(--qg-mint);
+  font-size: clamp(11px, 0.2vw + 11px, 13px);
+  font-weight: 700;
+}
+
+.team-detail__nav {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 6px;
+}
+
+.team-detail__nav-item {
+  width: 100%;
+  border: 0;
+  min-height: 54px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 0 16px;
+  border-radius: 6px;
+  background: transparent;
+  color: var(--qg-text-on-dark);
+  font-size: clamp(14px, 0.3vw + 13px, 16px);
+  font-weight: 700;
+  text-decoration: none;
+  text-align: left;
+}
+
+.team-detail__nav-item:hover,
+.team-detail__nav-item--active {
+  background: linear-gradient(135deg, #087a92, #0d7f92);
+  color: #ffffff;
+}
+
+.team-detail__nav-item--active-soft {
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.team-detail__nav-item--disabled {
+  opacity: 0.55;
+  cursor: default;
+}
+
+.team-detail__nav-item--danger {
+  margin-top: 12px;
+  color: #f87171;
+  cursor: pointer;
+}
+
+.team-detail__nav-item--danger:hover {
+  background: rgba(248, 113, 113, 0.12);
+  color: #fca5a5;
+}
+
+.team-detail__main {
+  min-width: 0;
+  min-height: 0;
+  padding: 30px 34px 42px;
+  /* 项目多时只中间主栏滚动，侧栏/右侧动态栏固定 */
+  overflow-y: auto;
+}
+
+.team-detail__hero {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 18px;
+  margin-bottom: 32px;
+}
+
+.team-detail__back {
+  display: inline-block;
+  margin-bottom: 10px;
+  color: var(--qg-text-secondary);
+  font-size: clamp(11px, 0.2vw + 11px, 13px);
+  text-decoration: none;
+}
+
+.team-detail__back:hover {
+  color: var(--qg-blue);
+}
+
+.team-detail__hero h1 {
+  margin: 0 0 8px;
+  font-size: clamp(24px, 1.2vw + 18px, 32px);
+  line-height: 1.15;
+}
+
+.team-detail__hero p {
+  margin: 0;
+  color: #40516f;
+  font-size: clamp(13px, 0.4vw + 12px, 15px);
+}
+
+.team-detail__section-heading,
+.team-detail__panel-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.team-detail__section-heading h2,
+.team-detail__panel-heading h2 {
+  margin: 0;
+  font-size: clamp(16px, 0.5vw + 13px, 20px);
+}
+
+.team-detail__section-heading span,
+.team-detail__panel-heading span,
+.team-detail__panel-heading a {
+  color: var(--qg-blue);
+  font-size: clamp(11px, 0.2vw + 11px, 13px);
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.team-detail__project-list {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.team-detail__project-card {
+  min-height: 142px;
+  display: grid;
+  grid-template-columns: 76px minmax(0, 1fr) auto;
+  gap: 22px;
+  align-items: center;
+  padding: 22px;
+  border: 1px solid #d9e2ef;
+  border-radius: 8px;
+  background: #ffffff;
+  box-shadow: 0 18px 48px rgba(15, 23, 42, 0.04);
+}
+
+.team-detail__project-icon {
+  width: 76px;
+  height: 76px;
+  border-radius: 12px;
+  display: grid;
+  place-items: center;
+  color: #ffffff;
+  font-size: 30px;
+  font-weight: 900;
+}
+
+.team-detail__project-icon--img {
+  object-fit: cover;
+}
+
+.team-detail__project-body {
+  min-width: 0;
+}
+
+.team-detail__project-heading {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 8px;
+}
+
+.team-detail__project-heading h3 {
+  margin: 0;
+  min-width: 0;
+  font-size: clamp(17px, 0.6vw + 15px, 22px);
+  line-height: 1.2;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.team-detail__project-role {
+  flex: 0 0 auto;
+  padding: 4px 10px;
+  border-radius: 6px;
+  background: #e9f7f3;
+  color: var(--qg-teal-dark);
+  font-size: clamp(11px, 0.2vw + 11px, 13px);
+  font-weight: 800;
+}
+
+.team-detail__project-card p {
+  margin: 0 0 20px;
+  color: #40516f;
+  font-size: clamp(13px, 0.4vw + 12px, 15px);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.team-detail__project-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 18px 24px;
+  color: #0f1b33;
+  font-size: clamp(12px, 0.3vw + 12px, 14px);
+}
+
+.team-detail__project-meta span {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.team-detail__enter-project {
+  min-width: 108px;
+  height: 42px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid #07809b;
+  border-radius: 6px;
+  color: #07657d;
+  background: #ffffff;
+  font-size: clamp(14px, 0.3vw + 13px, 16px);
+  font-weight: 800;
+  text-decoration: none;
+}
+
+.team-detail__enter-project:hover {
+  background: #eefbfc;
+}
+
+.team-detail__notice {
+  display: flex;
+  gap: 14px;
+  margin-top: 30px;
+  padding: 18px 20px;
+  border: 1px solid #a9cdfb;
+  border-radius: 8px;
+  background: #f3f8ff;
+  color: #17345f;
+}
+
+.team-detail__notice svg {
+  color: #1677ff;
+  font-size: 24px;
+  margin-top: 2px;
+}
+
+.team-detail__notice strong,
+.team-detail__notice span {
+  display: block;
+}
+
+.team-detail__notice span {
+  margin-top: 8px;
+  color: #40516f;
+}
+
+.team-detail__aside {
+  min-width: 0;
+  min-height: 0;
+  padding: 30px 20px 42px;
+  border-left: 1px solid #d9e2ef;
+  background: #ffffff;
+}
+
+.team-detail__panel {
+  margin-bottom: 28px;
+  padding: 22px 20px;
+  border: 1px solid #e0e7f0;
+  border-radius: 8px;
+  background: #ffffff;
+}
+
+.team-detail__activity-list,
+.team-detail__member-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.team-detail__activity-list {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.team-detail__activity-item {
+  display: grid;
+  grid-template-columns: 28px minmax(0, 1fr) auto;
+  gap: 12px;
+  align-items: start;
+}
+
+.team-detail__activity-item svg {
+  color: var(--qg-teal);
+  font-size: 20px;
+  margin-top: 2px;
+}
+
+.team-detail__activity-item strong,
+.team-detail__activity-item span {
+  display: block;
+}
+
+.team-detail__activity-item strong {
+  color: var(--qg-text-primary);
+  font-size: clamp(12px, 0.3vw + 12px, 14px);
+}
+
+.team-detail__activity-item span,
+.team-detail__activity-item time,
+.team-detail__muted {
+  color: #40516f;
+  font-size: clamp(11px, 0.2vw + 11px, 13px);
+}
+
+.team-detail__member-list {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.team-detail__directory {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.team-detail__directory .team-detail__member-row {
+  padding: 18px 20px;
+  border: 1px solid #d9e2ef;
+  border-radius: 8px;
+  background: #ffffff;
+}
+
+.team-detail__member-row {
+  display: grid;
+  grid-template-columns: 42px minmax(0, 1fr) auto;
+  gap: 12px;
+  align-items: center;
+}
+
+.team-detail__member-avatar {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background: var(--qg-blue);
+  color: #ffffff;
+  font-weight: 800;
+}
+
+/* 成员头像图片：覆盖文字占位的背景，圆形裁切 */
+.team-detail__member-avatar--img {
+  width: 42px;
+  height: 42px;
+  object-fit: cover;
+  border-radius: 50%;
+  background: transparent;
+  font-size: 0;
+}
+
+.team-detail__member-copy {
+  min-width: 0;
+}
+
+.team-detail__member-copy strong,
+.team-detail__member-copy span {
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.team-detail__member-copy strong {
+  color: var(--qg-text-primary);
+  font-size: clamp(12px, 0.3vw + 12px, 14px);
+}
+
+.team-detail__member-copy span {
+  color: #40516f;
+  font-size: clamp(11px, 0.2vw + 11px, 13px);
+}
+
+.team-detail__member-role {
+  padding: 4px 9px;
+  border-radius: 6px;
+  background: #eef4ff;
+  color: #1d4ed8;
+  font-size: clamp(11px, 0.2vw + 11px, 13px);
+  font-weight: 800;
+}
+
+.team-detail__member-summary {
+  display: flex;
+  gap: 10px;
+  margin-top: 18px;
+  color: #40516f;
+  font-size: clamp(11px, 0.2vw + 11px, 13px);
+}
+
+.team-detail__panel-loading {
+  display: flex;
+  justify-content: center;
+  padding: 18px 0;
+}
+
+.team-detail__invite-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.team-detail__invite-card {
+  display: grid;
+  grid-template-columns: 42px minmax(0, 1fr) auto;
+  grid-template-areas:
+    'avatar copy role'
+    'avatar actions actions'
+    'avatar status status';
+  gap: 8px 12px;
+  align-items: center;
+}
+
+.team-detail__invite-avatar {
+  grid-area: avatar;
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background: #6d5dfc;
+  color: #ffffff;
+  font-weight: 800;
+}
+
+.team-detail__invite-copy {
+  grid-area: copy;
+  min-width: 0;
+}
+
+.team-detail__invite-copy strong,
+.team-detail__invite-copy span {
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.team-detail__invite-copy strong {
+  color: var(--qg-text-primary);
+  font-size: clamp(12px, 0.3vw + 12px, 14px);
+}
+
+.team-detail__invite-copy span,
+.team-detail__invite-status {
+  color: #40516f;
+  font-size: clamp(11px, 0.2vw + 11px, 13px);
+}
+
+.team-detail__invite-role {
+  grid-area: role;
+  padding: 4px 9px;
+  border-radius: 6px;
+  background: #eef4ff;
+  color: #1d4ed8;
+  font-size: clamp(11px, 0.2vw + 11px, 13px);
+  font-weight: 800;
+}
+
+.team-detail__invite-actions {
+  grid-area: actions;
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+.team-detail__invite-actions .ant-btn {
+  min-width: 66px;
+  font-weight: 700;
+}
+
+.team-detail__invite-status {
+  grid-area: status;
+  justify-self: end;
+}
+
+@media (max-width: 1160px) {
+  .team-detail__hero {
+    margin-bottom: 28px;
+  }
+}
+
+/* —— 响应式：窄屏下三栏 → 两栏（右侧动态换行到下方占满整行，不隐藏）→ 单栏 —— */
+@media (max-width: 1200px) {
+  .team-detail {
+    grid-template-columns: 248px minmax(0, 1fr);
+  }
+  .team-detail__aside {
+    /* 不再 display:none：换行到第二行，横跨整行展示「最近动态」，避免中栏被挤压/右侧溢出覆盖 */
+    display: block;
+    grid-column: 1 / -1;
+    border-left: 0;
+    border-top: 1px solid #d9e2ef;
+    padding: 24px 20px 36px;
+  }
+}
+
+@media (max-width: 820px) {
+  .team-detail {
+    grid-template-columns: 1fr;
+    /* 单栏两行：侧边栏行按内容高，主栏行占满剩余高度可滚动（替代原 align-content:start，
+       同样避免侧边栏 navy 背景被拉出空白，同时主栏 overflow 生效） */
+    grid-template-rows: auto minmax(0, 1fr);
+  }
+  .team-detail__sidebar {
+    padding: 12px;
+    border-right: 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  }
+  .team-detail__team-card {
+    display: none;
+  }
+  .team-detail__nav {
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+  .team-detail__nav-item {
+    min-height: 40px;
+    font-size: 14px;
+  }
+  .team-detail__main {
+    padding: 20px 16px;
+  }
+  .team-detail__hero {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .team-detail__hero h1 {
+    font-size: 24px;
+  }
+}

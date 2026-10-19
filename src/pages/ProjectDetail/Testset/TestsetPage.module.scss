@@ -1,0 +1,558 @@
+.page {
+  min-height: calc(100vh - 56px);
+  padding: 24px 28px 48px;
+  background: #f4f7fb;
+  color: #12213d;
+}
+
+.header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.title {
+  margin: 0 !important;
+  color: #12213d;
+  font-size: 26px;
+  font-weight: 700;
+}
+
+.toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.filterControl {
+  min-width: 200px;
+}
+
+.alert {
+  margin-bottom: 16px;
+}
+
+.layout {
+  display: grid;
+  gap: 16px;
+  align-items: start;
+}
+
+.layoutRunOnly {
+  grid-template-columns: minmax(0, 1fr) minmax(280px, 320px);
+}
+
+.layoutWithRecipes {
+  grid-template-columns: minmax(260px, 320px) minmax(0, 1fr) minmax(280px, 320px);
+}
+
+@media (max-width: 1200px) {
+  .layoutRunOnly,
+  .layoutWithRecipes {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+.columnTitle {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+.cardList {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.manageLink {
+  padding-left: 0;
+  margin-top: 4px;
+}
+
+.testsetCard {
+  border-color: #e4eaf2;
+  border-radius: 8px;
+  cursor: pointer;
+  box-shadow: 0 2px 10px rgba(22, 47, 82, 0.04);
+}
+
+.testsetCard :global(.ant-card-body) {
+  padding: 14px 16px;
+}
+
+.testsetCardSelected {
+  border-color: #0d9b9b;
+  box-shadow: 0 4px 18px rgba(13, 155, 155, 0.14);
+}
+
+.cardHeading {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.meta {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px 12px;
+  margin-top: 10px;
+  color: #6d7d95;
+  font-size: 12px;
+}
+
+.cardActions {
+  margin-top: 12px;
+}
+
+.panel {
+  background: #ffffff;
+  border: 1px solid #e4eaf2;
+  border-radius: 10px;
+  padding: 16px 18px 20px;
+}
+
+.runTitle {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.metaGrid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px 16px;
+  margin: 4px 0 16px;
+  padding: 12px 14px;
+  background: #f7f9fc;
+  border: 1px solid #eef2f7;
+  border-radius: 8px;
+}
+
+.metaCell {
+  min-width: 0;
+}
+
+.metaLabel {
+  display: block;
+  color: #6d7d95;
+  font-size: 12px;
+  margin-bottom: 4px;
+}
+
+.metaHighlight {
+  display: inline-block;
+  max-width: 100%;
+  color: #0d9b9b;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.4;
+  word-break: break-all;
+}
+
+.contextTable {
+  margin-bottom: 8px;
+}
+
+.historyPanel {
+  margin-bottom: 20px;
+}
+
+.historyHint {
+  display: block;
+  margin-top: 4px;
+  font-size: 12px;
+}
+
+.historyList {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.historyItem {
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+  gap: 4px;
+  width: 100%;
+  padding: 10px 8px 10px 12px;
+  border: 1px solid #e4eaf2;
+  border-radius: 8px;
+  background: #f7f9fc;
+}
+
+.historyItem:hover {
+  border-color: #0d9b9b;
+}
+
+.historyHit {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.historyDelete {
+  flex: 0 0 auto;
+  margin-top: 2px;
+  color: #94a3b8;
+}
+
+.historyDelete:hover {
+  color: #dc2626 !important;
+}
+
+.historyHeading {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+}
+
+.historyTime {
+  color: #6d7d95;
+  font-size: 12px;
+}
+
+.metrics {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 8px;
+  margin: 12px 0 16px;
+}
+
+.metric {
+  background: #f7f9fc;
+  border-radius: 8px;
+  padding: 10px 12px;
+}
+
+.metricLabel {
+  display: block;
+  color: #6d7d95;
+  font-size: 12px;
+}
+
+.metricValue {
+  display: block;
+  font-size: 20px;
+  font-weight: 700;
+}
+
+.metricFail {
+  color: #cf1322;
+}
+
+.sideText {
+  color: #6d7d95;
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+.state {
+  display: flex;
+  justify-content: center;
+  padding: 64px 0;
+}
+
+// 入口卡片内部允许文字收缩、标签和操作换行，避免窄卡片把按钮推出边界。
+.entryCard {
+  min-width: 0;
+  overflow: hidden;
+}
+
+.entryCard :global(.ant-card-body) {
+  min-width: 0;
+}
+
+.entryRow {
+  display: flex !important;
+  width: 100%;
+  min-width: 0;
+}
+
+.entryRow :global(.ant-space-item:nth-child(2)) {
+  min-width: 0;
+  flex: 1 1 auto;
+}
+
+.entryBody {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.entryArrow {
+  flex: 0 0 auto;
+}
+
+.entryTags {
+  max-width: 100%;
+}
+
+/* FlowStepper area */
+.flowArea {
+  margin-bottom: 16px;
+}
+
+.mrListArea {
+  margin-top: 16px;
+}
+
+/* Detail panel (gate / CQ expand) */
+.detailPanel {
+  background: #fff;
+  border: 1px solid #e8edf3;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.detailHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 16px;
+  border-bottom: 1px solid #eef2f6;
+  font-size: 14px;
+  font-weight: 600;
+  color: #0f1b33;
+  background: #f7f9fc;
+}
+
+.closeBtn {
+  border: 0;
+  background: transparent;
+  color: #5b6b82;
+  font-size: 14px;
+  cursor: pointer;
+  padding: 4px 8px;
+  border-radius: 4px;
+  line-height: 1;
+}
+
+.closeBtn:hover {
+  background: #e8edf3;
+  color: #0f1b33;
+}
+
+.detailState {
+  display: flex;
+  justify-content: center;
+  padding: 24px;
+  color: #5b6b82;
+  font-size: 13px;
+}
+
+/* Gate nodes */
+.gateNodes {
+  padding: 12px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.gateNode {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 13px;
+}
+
+.dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.dot_passed {
+  background: #16a34a;
+}
+
+.dot_failed {
+  background: #dc2626;
+}
+
+.dot_pending {
+  background: #94a3b8;
+}
+
+.gateNodeName {
+  font-weight: 600;
+  color: #0f1b33;
+  min-width: 120px;
+}
+
+.gateNodeStatus {
+  color: #5b6b82;
+}
+
+/* CQ detail */
+.cqContent {
+  padding: 16px;
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.cqContent strong {
+  display: block;
+  font-size: 14px;
+  color: #0f1b33;
+}
+
+.cqMeta {
+  margin: 4px 0 0;
+  font-size: 12px;
+  color: #5b6b82;
+}
+
+.cqReason {
+  margin: 6px 0 0;
+  font-size: 13px;
+  color: #334155;
+  line-height: 1.5;
+}
+
+.cqApproved,
+.cqRejected,
+.cqPending {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+@media (max-width: 900px) {
+  .metaGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+/* New layout styles */
+.tabs {
+  margin-top: 8px;
+}
+
+.gateTab {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.gateContent {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 320px;
+  gap: 16px;
+}
+
+@media (max-width: 1100px) {
+  .gateContent {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+.mainColumn {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.sideColumn {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.currentRunCard,
+.gateDetailCard,
+.sideCard {
+  border-radius: 10px;
+}
+
+.cardHeader {
+  margin-bottom: 12px;
+}
+
+.cardTitle {
+  margin: 0 !important;
+  font-size: 16px !important;
+}
+
+.sideTitle {
+  margin: 0 0 4px !important;
+}
+
+.sideHint {
+  display: block;
+  margin-bottom: 12px;
+  font-size: 12px;
+}
+
+.currentRunList {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.currentRunItem {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  background: #f7f9fc;
+  border-radius: 8px;
+}
+
+.currentRunEmpty {
+  padding: 16px 0;
+}
+
+.recentRunItem {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+}
+
+.recentRunStatus {
+  margin-left: auto;
+}
+
+.permissionInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+.adminTag {
+  width: fit-content;
+}
+
+.mrTab {
+  padding-top: 8px;
+}

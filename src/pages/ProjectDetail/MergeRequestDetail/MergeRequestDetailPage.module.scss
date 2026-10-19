@@ -1,0 +1,587 @@
+.page {
+  display: flex;
+  flex-direction: column;
+  min-height: 100%;
+  padding: 16px 20px 32px;
+  background: #f7f8fa;
+  color: #0f1b33;
+}
+
+.back {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 10px;
+  color: #5b6b82;
+  font-size: 13px;
+}
+
+.back:hover {
+  color: var(--qg-teal-dark, #0f766e);
+}
+
+.header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 16px;
+  padding: 16px 18px;
+  background: #fff;
+  border: 1px solid #e8edf3;
+  border-radius: 10px;
+}
+
+.titleRow {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.titleRow h1 {
+  margin: 0;
+  font-size: 22px;
+  line-height: 1.25;
+}
+
+.meta {
+  margin: 8px 0 0;
+  color: #5b6b82;
+  font-size: 13px;
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+.card {
+  background: #fff;
+  border: 1px solid #e8edf3;
+  border-radius: 10px;
+  padding: 16px 18px;
+}
+
+.cardTitle {
+  margin: 0 0 12px;
+  font-size: 15px;
+  font-weight: 700;
+}
+
+.commitList {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.commitRow {
+  display: grid;
+  grid-template-columns: 28px 72px minmax(0, 1fr) auto auto;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 0;
+  border-bottom: 1px solid #eef2f6;
+}
+
+.commitRow:last-child {
+  border-bottom: 0;
+}
+
+.commitSha {
+  font-size: 12px !important;
+}
+
+.commitMessage {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: #0f1b33;
+  font-size: 13px;
+}
+
+.commitAuthor {
+  color: #5b6b82;
+  font-size: 13px;
+  white-space: nowrap;
+}
+
+.commitTime {
+  color: #94a3b8;
+  font-size: 12px;
+  white-space: nowrap;
+}
+
+.commitMore {
+  padding: 8px 0 0;
+  height: auto;
+  font-size: 13px;
+}
+
+.commitState {
+  display: flex;
+  justify-content: center;
+  padding: 24px 0;
+}
+
+.gate {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0;
+  padding: 8px 0 4px;
+}
+
+.gateItem {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 0 12px;
+}
+
+.gateHit {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  color: inherit;
+  text-decoration: none;
+}
+
+a.gateHit:hover .gateName {
+  color: var(--qg-teal-dark, #0f766e);
+}
+
+.gateReport {
+  z-index: 1;
+  margin-top: 6px;
+  font-size: 12px;
+  line-height: 1.3;
+  color: var(--qg-teal-dark, #0f766e);
+}
+
+.gateItem:not(:last-child)::after {
+  content: '';
+  position: absolute;
+  top: 14px;
+  left: calc(50% + 18px);
+  right: calc(-50% + 18px);
+  height: 2px;
+  background: #dbe4ee;
+}
+
+.gateDot {
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: #e8edf3;
+  color: #64748b;
+  font-size: 14px;
+}
+
+.gateDot.isPassed {
+  background: #dcfce7;
+  color: #16a34a;
+}
+
+.gateDot.isFailed {
+  background: #fee2e2;
+  color: #dc2626;
+}
+
+.gateDot.isPending {
+  background: #fff7ed;
+  color: #ea580c;
+}
+
+.gateName {
+  margin: 10px 0 4px;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.gateSummary {
+  margin: 0;
+  color: #5b6b82;
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.sealBlock {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  margin-top: 20px;
+  padding: 20px 12px 28px;
+  border-top: 1px dashed #e8edf3;
+}
+
+.seal {
+  position: relative;
+  width: 168px;
+  height: 168px;
+  color: #94a3b8;
+}
+
+.sealRing {
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  border: 6px double currentColor;
+  border-radius: 50%;
+}
+
+.sealInner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  width: calc(100% - 22px);
+  height: calc(100% - 22px);
+  border: 2px solid currentColor;
+  border-radius: 50%;
+}
+
+.seal.isEmpty .sealRing,
+.seal.isLocked .sealRing {
+  border-style: dashed;
+}
+
+.seal.isStamped {
+  color: #b91c1c;
+  background: #fef2f2;
+  border-radius: 50%;
+}
+
+.seal.isFailed {
+  color: #dc2626;
+  background: #fef2f2;
+  border-radius: 50%;
+}
+
+.seal.isCracked {
+  color: #b45309;
+  background: #fff7ed;
+  border-radius: 50%;
+}
+
+.seal.isCracked::after {
+  content: '';
+  position: absolute;
+  top: 12%;
+  left: 48%;
+  width: 3px;
+  height: 76%;
+  background: #fff;
+  box-shadow: 0 0 0 1px currentColor;
+  transform: rotate(18deg);
+  pointer-events: none;
+}
+
+.sealLock {
+  margin-bottom: 2px;
+  font-size: 16px;
+}
+
+.sealMark {
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.18em;
+}
+
+.sealSha {
+  font-family: ui-monospace, Consolas, monospace;
+  font-size: 18px;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+}
+
+.sealState {
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.sealMeta {
+  max-width: 420px;
+  text-align: center;
+  color: #5b6b82;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.sealMeta p {
+  margin: 0;
+}
+
+.sealDenied {
+  color: #dc2626;
+  font-weight: 700;
+}
+
+.sealHistory {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  padding: 0;
+  height: auto;
+  font-size: 12px;
+  color: #5b6b82;
+}
+
+.sealHistoryState {
+  display: flex;
+  justify-content: center;
+  padding: 24px 0;
+}
+
+.sealHistoryList {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.sealHistoryItem {
+  padding: 12px 0;
+  border-bottom: 1px solid #eef2f6;
+}
+
+.sealHistoryItem:last-child {
+  border-bottom: 0;
+}
+
+.sealHistoryHead {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 6px;
+}
+
+.sealHistoryHead strong {
+  font-size: 14px;
+}
+
+.isApproved {
+  color: #16a34a;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.isRejected {
+  color: #dc2626;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.sealHistoryReason,
+.sealHistoryTime {
+  margin: 0;
+  color: #5b6b82;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.sealHistoryTime {
+  margin-top: 4px;
+  font-size: 12px;
+}
+
+.changes {
+  display: grid;
+  grid-template-columns: 220px minmax(0, 1fr);
+  gap: 12px;
+  min-height: 360px;
+}
+
+.panel {
+  background: #fff;
+  border: 1px solid #e8edf3;
+  border-radius: 10px;
+  min-height: 0;
+  overflow: auto;
+}
+
+.panelHead {
+  padding: 10px 12px;
+  border-bottom: 1px solid #eef2f6;
+  font-size: 12px;
+  font-weight: 700;
+  color: #5b6b82;
+}
+
+.file {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  border: 0;
+  background: transparent;
+  padding: 7px 12px;
+  text-align: left;
+  color: inherit;
+  cursor: pointer;
+}
+
+.file:hover,
+.file.isActive {
+  background: #eef8f6;
+}
+
+.fileName {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 13px;
+}
+
+.fileMark {
+  flex: 0 0 auto;
+  font-size: 11px;
+  font-weight: 800;
+}
+
+.fileMark.isM {
+  color: #2563eb;
+}
+
+.fileMark.isA {
+  color: #16a34a;
+}
+
+.fileMark.isD {
+  color: #dc2626;
+}
+
+.fileMeta {
+  padding: 10px 14px;
+  border-bottom: 1px solid #eef2f6;
+  font-family: ui-monospace, Consolas, monospace;
+  font-size: 13px;
+}
+
+.hunkHead {
+  padding: 6px 14px;
+  background: #f4f7fb;
+  color: #5b6b82;
+  font-family: ui-monospace, Consolas, monospace;
+  font-size: 12px;
+}
+
+.line {
+  display: grid;
+  grid-template-columns: 44px 44px 22px minmax(0, 1fr);
+  font-family: ui-monospace, Consolas, monospace;
+  font-size: 12px;
+  line-height: 1.55;
+}
+
+.line.isAdd {
+  background: #e7f8ee;
+}
+
+.line.isDel {
+  background: #fdecec;
+}
+
+.gutter {
+  color: #94a3b8;
+  text-align: right;
+  padding: 0 6px;
+  user-select: none;
+}
+
+.sign {
+  text-align: center;
+  font-weight: 700;
+}
+
+.code {
+  padding: 0 10px;
+  white-space: pre;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.comment {
+  display: grid;
+  grid-template-columns: 32px minmax(0, 1fr);
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.commentBody strong {
+  display: block;
+  font-size: 13px;
+}
+
+.commentBody p {
+  margin: 2px 0 0;
+  color: #334155;
+  font-size: 13px;
+}
+
+.commentBody time {
+  color: #94a3b8;
+  font-size: 12px;
+}
+
+.composer {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.empty {
+  padding: 48px 20px;
+  text-align: center;
+}
+
+@media (max-width: 900px) {
+  .gate {
+    grid-template-columns: 1fr 1fr;
+    gap: 16px 0;
+  }
+
+  .gateItem:not(:last-child)::after {
+    display: none;
+  }
+
+  .commitRow {
+    grid-template-columns: 28px 64px minmax(0, 1fr);
+    gap: 8px 10px;
+  }
+
+  .commitAuthor,
+  .commitTime {
+    grid-column: 3;
+  }
+
+  .commitAuthor {
+    grid-row: 2;
+  }
+
+  .commitTime {
+    grid-row: 2;
+    justify-self: end;
+  }
+
+  .changes {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}

@@ -1,0 +1,1983 @@
+.page {
+  display: flex;
+  height: calc(100vh - var(--qg-banner-h, 0px));
+  min-height: 0;
+  width: 100%;
+  flex-direction: column;
+  overflow: hidden;
+  padding: 0 clamp(10px, 0.5vw + 8px, 100%) clamp(8px, 0.5vw + 5px, 100%);
+  color: #12213d;
+  background: #fff;
+}
+
+.topBar {
+  display: flex;
+  min-height: clamp(28px, 0.4vw + 24px, 100%);
+  align-items: center;
+  border-bottom: 1px solid #edf1f5;
+}
+
+.taskHeader {
+  flex: 0 0 auto;
+  padding: clamp(8px, 0.3vw + 5px, 100%) 0 clamp(8px, 0.3vw + 5px, 100%);
+  border-bottom: 1px solid #e9eef4;
+}
+
+.taskWorkspace {
+  display: grid;
+  min-width: 0;
+  min-height: 0;
+  flex: 1 1 auto;
+  grid-template-columns: minmax(0, 1fr) minmax(clamp(200px, 10vw + 60px, 100%), clamp(240px, 12vw + 80px, 100%));
+  gap: clamp(8px, 0.3vw + 6px, 100%);
+  overflow: hidden;
+  transition: grid-template-columns 180ms ease, gap 180ms ease;
+}
+
+.taskWorkspaceAsideCollapsed {
+  grid-template-columns: minmax(0, 1fr) 32px;
+  gap: 0;
+}
+
+.taskWorkspaceMain {
+  display: flex;
+  min-width: 0;
+  min-height: 0;
+  flex-direction: column;
+}
+
+.taskWorkspaceAside {
+  position: relative;
+  min-width: 0;
+  min-height: 0;
+  overflow-y: auto;
+  padding: clamp(3px, 0.15vw + 2px, 100%) 0 0 clamp(5px, 0.15vw + 3px, 100%);
+  border-left: 1px solid #e9eef4;
+}
+
+.taskWorkspaceAside::before {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: -1px;
+  width: 1px;
+  background: #dce5ef;
+  content: '';
+  transition: background-color 160ms ease;
+}
+
+.taskWorkspaceAside:hover::before,
+.taskWorkspaceAside:focus-within::before {
+  background: #9fc4ed;
+}
+
+.runInspectorToggle {
+  position: absolute;
+  top: 8px;
+  left: -14px;
+  z-index: 5;
+  display: grid;
+  width: 28px;
+  height: 28px;
+  place-items: center;
+  margin: 0;
+  padding: 0 !important;
+  border: 1px solid #dbe5ef !important;
+  border-radius: 7px !important;
+  background: #fff !important;
+  box-shadow: 0 1px 3px rgb(23 43 77 / 8%);
+  color: #70839a !important;
+  transition: border-color 160ms ease, color 160ms ease, background-color 160ms ease, box-shadow 160ms ease;
+}
+
+.runInspectorToggle:hover,
+.runInspectorToggle:focus-visible {
+  border-color: #a8cbef !important;
+  background: #f2f8ff !important;
+  box-shadow: 0 2px 6px rgb(22 119 255 / 14%);
+  color: #2563a8 !important;
+}
+
+.taskWorkspaceAside :global(.ant-typography),
+.taskWorkspaceAside :global(.ant-typography p),
+.taskWorkspaceAside :global(h1),
+.taskWorkspaceAside :global(h2),
+.taskWorkspaceAside :global(h3),
+.taskWorkspaceAside :global(h4),
+.taskWorkspaceAside :global(h5),
+.taskWorkspaceAside :global(p) {
+  font-size: inherit !important;
+}
+
+.headerPrimary,
+.headerActions,
+.headerMeta,
+.rowHeading,
+.stepHeading,
+.stepFooter,
+.cardHeading,
+.deliverySummaryRow {
+  display: flex;
+  align-items: center;
+}
+
+.headerPrimary {
+  min-width: 0;
+  justify-content: space-between;
+  gap: clamp(4px, 0.2vw + 3px, 100%);
+}
+
+.headerActions {
+  flex: 0 0 auto;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: clamp(4px, 0.1vw + 3px, 100%);
+  margin-left: auto;
+}
+
+.headerTitleBlock {
+  min-width: 0;
+  margin-top: clamp(2px, 0.1vw + 1px, 100%);
+  padding-left: clamp(1px, 0.1vw + 1px, 100%);
+}
+
+.headerTitleLine {
+  display: flex;
+  min-width: 0;
+  align-items: center;
+  gap: clamp(1px, 0.1vw + 1px, 100%);
+}
+
+.taskCode {
+  flex: 0 0 auto;
+  color: #6d7d95;
+  font-family: 'Cascadia Mono', Consolas, monospace;
+  font-size: clamp(10px, 0.1vw + 9px, 100%);
+}
+
+.taskTitle {
+  min-width: 0;
+  margin: 0;
+  overflow: hidden;
+  color: #12213d !important;
+  font-size: clamp(15px, 0.4vw + 12px, 100%) !important;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.copyButton {
+  flex: 0 0 auto;
+  color: #6d7d95;
+}
+
+.headerMeta {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: clamp(4px, 0.2vw + 3px, 100%);
+  padding: clamp(2px, 0.2vw + 2px, 100%) 0 0 clamp(14px, 1vw + 8px, 100%);
+}
+
+.headerMetaItem {
+  display: grid;
+  min-width: 0;
+  gap: clamp(1px, 0.05vw + 1px, 100%);
+  font-size: clamp(10px, 0.05vw + 9px, 100%);
+}
+
+.headerMetaItem> :last-child {
+  min-width: 0;
+  overflow: hidden;
+  color: #243855;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.executionAlert {
+  flex: 0 0 auto;
+  margin: clamp(2px, 0.15vw + 2px, 100%) 0 0;
+}
+
+.attentionBanner {
+  flex: 0 0 auto;
+  padding: clamp(2px, 0.2vw + 2px, 100%) 0 0;
+}
+
+.attentionBanner :global(.ant-alert) {
+  padding: clamp(3px, 0.15vw + 2px, 100%) clamp(6px, 0.15vw + 4px, 100%);
+}
+
+.attentionBanner :global(.ant-alert-description) {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.content {
+  display: grid;
+  min-width: 0;
+  min-height: 0;
+  flex: 1 1 auto;
+  grid-template-rows: minmax(clamp(180px, 14vw + 10px, 100%), 1.2fr) minmax(0, 1fr);
+  gap: clamp(4px, 0.2vw + 3px, 100%);
+  padding-top: clamp(4px, 0.2vw + 3px, 100%);
+}
+
+.executionFlowRow,
+.requirementRow,
+.outputRow {
+  min-width: 0;
+  min-height: 0;
+}
+
+.executionFlowRow,
+.outputRow {
+  display: flex;
+  flex-direction: column;
+}
+
+.rowHeading {
+  flex: 0 0 auto;
+  justify-content: space-between;
+  gap: clamp(3px, 0.15vw + 2px, 100%);
+  margin-bottom: clamp(6px, 0.3vw + 4px, 100%);
+}
+
+.rowHeading h4 {
+  margin: 0;
+  color: #12213d;
+  font-size: clamp(16px, 0.4vw + 13px, 100%);
+}
+
+.workbenchMain {
+  display: grid;
+  container-type: size;
+  min-width: 0;
+  min-height: 0;
+  grid-template-rows: minmax(clamp(80px, 3vw + 38px, 100%), 0.6fr) minmax(0, 1.4fr);
+  gap: clamp(4px, 0.2vw + 3px, 100%);
+  overflow-y: auto;
+}
+
+@container (max-height: 360px) {
+  .workbenchMain {
+    grid-template-rows: minmax(clamp(60px, 3vw + 24px, 100%), 0.5fr) minmax(0, 1.5fr);
+  }
+}
+
+@container (max-height: 260px) {
+  .workbenchMain {
+    grid-template-rows: minmax(clamp(48px, 2vw + 18px, 100%), 0.45fr) minmax(0, 1.55fr);
+  }
+}
+
+.runInspectorPanel {
+  display: grid;
+  min-width: 0;
+  height: 100dvh;
+  gap: clamp(5px, 0.15vw + 4px, 100%);
+  padding: clamp(6px, 0.15vw + 4px, 100%);
+  border: 1px solid #e4eaf2;
+  border-radius: clamp(4px, 0.1vw + 3px, 100%);
+  background: #fff;
+  overflow-y: auto;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.runInspectorPanel::-webkit-scrollbar {
+  display: none;
+}
+
+.runInspectorPanelHeading {
+  display: flex;
+  min-width: 0;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: clamp(3px, 0.1vw + 2px, 100%);
+  padding-bottom: clamp(3px, 0.15vw + 2px, 100%);
+  border-bottom: 1px solid #edf1f5;
+}
+
+.runInspectorPanelHeading>div:first-child {
+  min-width: 0;
+}
+
+.runInspectorPanelHeading>div:last-child {
+  display: flex;
+  flex: 0 0 auto;
+  gap: clamp(2px, 0.1vw + 1px, 100%);
+}
+
+.runInspectorPanelHeading h4 {
+  margin: 1px 0 0;
+  color: #12213d;
+  font-size: clamp(12px, 0.3vw + 10px, 100%) !important;
+}
+
+.runInspectorPanelHeading :global(.ant-typography) {
+  font-size: inherit !important;
+}
+
+.recentExecutionPanel,
+.deliveryPanel {
+  min-width: 0;
+  min-height: 0;
+  overflow: auto;
+}
+
+.deliveryPanel {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(3px, 0.15vw + 2px, 100%);
+}
+
+.deliveryPanel .panelHeading {
+  padding-top: clamp(3px, 0.15vw + 2px, 100%);
+  border-top: 1px solid #e9eef4;
+}
+
+.panelHeading {
+  display: flex;
+  min-width: 0;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: clamp(5px, 0.15vw + 4px, 100%);
+  padding-bottom: clamp(4px, 0.2vw + 3px, 100%);
+}
+
+.panelHeading>div {
+  min-width: 0;
+}
+
+.panelHeading h3 {
+  margin: 1px 0 0;
+  color: #12213d;
+  font-size: clamp(15px, 0.4vw + 12px, 100%) !important;
+}
+
+.panelHeading :global(.ant-typography) {
+  font-size: inherit !important;
+}
+
+.recentExecutionPanel {
+  display: flex;
+  padding: 0;
+  flex-direction: column;
+  gap: clamp(3px, 0.15vw + 2px, 100%);
+  overflow: visible;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+}
+
+.recentExecutionPanel .panelHeading {
+  padding-top: clamp(3px, 0.15vw + 2px, 100%);
+  border-top: 1px solid #e9eef4;
+}
+
+.recentExecutionPanel .panelHeading h3 {
+  margin: 0;
+  font-size: clamp(15px, 0.4vw + 12px, 100%) !important;
+}
+
+.recentExecutionScroller {
+  min-width: 0;
+  overflow-x: auto;
+  overflow-y: visible;
+  align-items: center;
+}
+
+.recentExecutionGrid {
+  display: grid;
+  width: max-content;
+  grid-auto-flow: column;
+  grid-auto-columns: minmax(clamp(160px, 6vw + 60px, 100%), clamp(280px, 10vw + 100px, 100%));
+  gap: clamp(3px, 0.15vw + 2px, 100%);
+  padding-bottom: 2px;
+}
+
+.recentRunItem {
+  display: flex;
+  flex-direction: column;
+  width: clamp(220px, 8vw + 80px, 100%);
+  min-height: clamp(70px, 4vw + 38px, 100%);
+  gap: clamp(2px, 0.15vw + 2px, 100%);
+  padding: clamp(5px, 0.15vw + 4px, 100%);
+  border: 1px solid #e4eaf2;
+  border-radius: clamp(3px, 0.1vw + 3px, 100%);
+  color: inherit;
+  background: #fff;
+  cursor: pointer;
+  text-align: left;
+  align-self: center;
+}
+
+.recentRunItemRow {
+  display: flex;
+  min-width: 0;
+  align-items: center;
+  justify-content: space-between;
+  gap: clamp(3px, 0.15vw + 2px, 100%);
+  overflow: visible;
+}
+
+.recentRunItemTitle {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.recentRunItemStatus {
+  white-space: nowrap;
+  overflow: visible;
+}
+
+.recentRunItemArtifact {
+  white-space: nowrap;
+  overflow: visible;
+}
+
+.recentRunItem :global(.ant-tag) {
+  flex: 0 0 auto;
+  margin: 0;
+}
+
+.recentRunItem :global(.ant-tag) {
+  flex: 0 0 auto;
+  margin: 0;
+}
+
+.recentRunItemSelected {
+  border-color: #1269c7;
+  box-shadow: 0 0 0 2px rgb(18 105 199 / 10%);
+}
+
+.deliveryGrid {
+  display: grid;
+  min-width: 0;
+  min-height: 0;
+  flex: 1 1 auto;
+  grid-template-columns: minmax(clamp(120px, 8vw + 40px, 100%), 0.8fr) minmax(0, 1.2fr);
+  gap: clamp(4px, 0.2vw + 3px, 100%);
+}
+
+.codeChangeCard {
+  min-width: 0;
+  border-color: #e4eaf2;
+  border-radius: clamp(4px, 0.1vw + 3px, 100%);
+}
+
+.codeChangeCard :global(.ant-card-body) {
+  display: grid;
+  min-height: 0;
+  height: 100%;
+  align-content: start;
+  gap: clamp(4px, 0.15vw + 3px, 100%);
+  padding: clamp(6px, 0.2vw + 4px, 100%);
+}
+
+.flowScroller {
+  display: block;
+  container-type: size;
+  min-width: 0;
+  min-height: 0;
+  flex: 1 1 auto;
+  overflow: auto;
+}
+
+.flowEmptyState {
+  display: flex;
+  min-height: 0;
+  flex: 1 1 auto;
+  align-items: center;
+  justify-content: center;
+  border: 1px dashed #d8e1ec;
+  border-radius: clamp(4px, 0.1vw + 3px, 100%);
+  background: #fbfcfe;
+}
+
+.flowPlanningState {
+  display: grid;
+  width: fit-content;
+  min-width: max-content;
+  height: 100%;
+  grid-auto-flow: column;
+  grid-auto-columns: clamp(150px, 18vw, 240px);
+  gap: clamp(24px, 1.5vw + 10px, 100%);
+  align-items: center;
+  margin-inline: auto;
+  padding: 0 clamp(2px, 0.2vw + 1px, 100%);
+}
+
+@container (max-height: 320px) {
+  .flowPlanningState {
+    grid-auto-columns: clamp(130px, 16vw, 210px);
+    gap: clamp(20px, 1vw + 12px, 100%);
+  }
+
+  .flowGrid {
+    grid-auto-columns: clamp(170px, 20vw, 260px);
+    gap: clamp(20px, 1vw + 12px, 100%);
+  }
+}
+
+@container (max-height: 250px) {
+  .flowPlanningState {
+    grid-auto-columns: clamp(112px, 14vw, 190px);
+    gap: clamp(16px, 0.8vw + 10px, 100%);
+  }
+
+  .flowGrid {
+    grid-auto-columns: clamp(150px, 18vw, 230px);
+    gap: clamp(16px, 0.8vw + 10px, 100%);
+  }
+}
+
+@container (max-height: 200px) {
+  .flowPlanningState {
+    grid-auto-columns: clamp(100px, 12vw, 170px);
+    gap: clamp(12px, 0.6vw + 8px, 100%);
+  }
+
+  .flowGrid {
+    grid-auto-columns: clamp(130px, 16vw, 210px);
+    gap: clamp(12px, 0.6vw + 8px, 100%);
+  }
+}
+
+@container (min-height: 500px) {
+  .flowPlanningState {
+    grid-auto-columns: clamp(224px, 22vw, 300px);
+    gap: clamp(58px, 2vw + 34px, 100%);
+  }
+
+  .flowGrid {
+    grid-auto-columns: clamp(260px, 24vw, 340px);
+    gap: clamp(58px, 2vw + 34px, 100%);
+  }
+}
+
+.planningStepCard {
+  display: grid;
+  width: 100%;
+  min-width: 0;
+  height: 100%;
+  min-height: clamp(78px, 4vw + 36px, 100%);
+  max-height: none;
+  position: relative;
+  gap: clamp(3px, 0.15vw + 2px, 100%);
+  align-content: space-between;
+  padding: clamp(6px, 0.15vw + 4px, 100%) clamp(7px, 0.15vw + 5px, 100%);
+  border: 1px solid #e4eaf2;
+  border-radius: clamp(5px, 0.1vw + 4px, 100%);
+  background: #fff;
+  overflow: hidden;
+}
+
+@container (max-height: 220px) {
+  .planningStepCard {
+    min-height: clamp(60px, 2vw + 24px, 100%);
+    padding: clamp(3px, 0.15vw + 3px, 100%) clamp(4px, 0.15vw + 3px, 100%);
+  }
+
+  .planningBrainIcon {
+    height: clamp(24px, 1.5vw + 10px, 100%);
+    font-size: clamp(20px, 0.8vw + 12px, 100%);
+  }
+
+  .planningMeta {
+    gap: clamp(3px, 0.15vw + 2px, 100%);
+    margin-top: clamp(3px, 0.15vw + 2px, 100%);
+  }
+}
+
+@container (max-height: 170px) {
+  .planningStepCard {
+    min-height: clamp(46px, 2vw + 18px, 100%);
+    padding: clamp(2px, 0.1vw + 2px, 100%) clamp(3px, 0.1vw + 2px, 100%);
+  }
+
+  .planningBrainIcon {
+    display: none;
+  }
+
+  .planningMeta {
+    display: none;
+  }
+
+  .skeletonFooterLine {
+    display: none;
+  }
+}
+
+.planningStepCard:not(:last-child)::after {
+  width: clamp(24px, 0.8vw + 12px, 100%);
+  position: absolute;
+  top: 50%;
+  right: clamp(-48px, -0.8vw - 20px, 100%);
+  color: #12213d;
+  content: '⟶';
+  font-size: clamp(24px, 0.8vw + 16px, 100%);
+  line-height: 1;
+  text-align: center;
+  transform: translateY(-50%);
+}
+
+@keyframes skeletonPulse {
+
+  0%,
+  100% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0.5;
+  }
+}
+
+@keyframes cardFadeIn {
+  0% {
+    opacity: 0;
+    transform: translateX(20px);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.planningCardFadeIn {
+  animation: cardFadeIn 0.4s ease-out both;
+}
+
+.skeletonLine {
+  border-radius: 3px;
+  background: linear-gradient(90deg, #e9eef4 0%, #f5f7fa 50%, #e9eef4 100%);
+  background-size: 200% 100%;
+  animation: skeletonShimmer 1.6s ease-in-out infinite;
+}
+
+@keyframes skeletonShimmer {
+  0% {
+    background-position: 200% 0;
+  }
+
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+.planningHeadingRow {
+  display: flex;
+  align-items: center;
+  gap: clamp(4px, 0.15vw + 3px, 100%);
+}
+
+.skeletonHeadingLine {
+  height: clamp(16px, 0.2vw + 12px, 100%);
+  width: clamp(80px, 2vw + 50px, 100%);
+}
+
+.planningMeta {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(4px, 0.2vw + 3px, 100%);
+  margin-top: clamp(4px, 0.2vw + 3px, 100%);
+}
+
+.skeletonMetaLine {
+  height: clamp(11px, 0.15vw + 10px, 100%);
+  width: 100%;
+}
+
+.planningFooter {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.skeletonFooterLine {
+  height: clamp(10px, 0.15vw + 8px, 100%);
+  width: clamp(60px, 2vw + 35px, 100%);
+}
+
+.planningBrainIcon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: clamp(34px, 2vw + 18px, 100%);
+  margin: 0 0 clamp(2px, 0.1vw + 1px, 100%);
+  color: #8a9ab5;
+  font-size: clamp(24px, 1.5vw + 14px, 100%);
+}
+
+.flowGrid {
+  display: grid;
+  width: max-content;
+  min-width: max-content;
+  height: 100%;
+  grid-auto-flow: column;
+  grid-auto-columns: clamp(220px, 24vw, 320px);
+  gap: clamp(24px, 1.5vw + 10px, 100%);
+  margin-inline: auto;
+}
+
+.stepCard {
+  display: grid;
+  width: 100%;
+  min-width: 0;
+  height: 100%;
+  min-height: clamp(78px, 4vw + 36px, 100%);
+  max-height: none;
+  position: relative;
+  gap: clamp(3px, 0.15vw + 2px, 100%);
+  align-content: space-between;
+  padding: clamp(10px, 0.3vw + 6px, 100%) clamp(12px, 0.4vw + 8px, 100%);
+  border: 1px solid #e4eaf2;
+  border-radius: clamp(5px, 0.1vw + 4px, 100%);
+  background: #fff;
+  align-self: center;
+}
+
+.stepCard:not(:last-child)::after {
+  position: absolute;
+  top: 50%;
+  right: clamp(0px, 0.3vw, 100%);
+  color: #12213d;
+  content: '⟶';
+  font-size: clamp(24px, 0.8vw + 16px, 100%);
+  line-height: 1;
+  transform: translateX(calc(100% + clamp(4px, 0.3vw + 2px, 100%))) translateY(-50%);
+}
+
+.stepHeading {
+  min-width: 0;
+  align-items: flex-start;
+  gap: clamp(3px, 0.1vw + 2px, 100%);
+}
+
+.stepIcon {
+  display: inline-flex;
+  width: clamp(16px, 0.4vw + 11px, 100%);
+  height: clamp(16px, 0.4vw + 11px, 100%);
+  flex: 0 0 auto;
+  align-items: center;
+  justify-content: center;
+  color: #12213d;
+  font-size: clamp(20px, 0.6vw + 15px, 100%);
+}
+
+.stepNumber {
+  display: inline-flex;
+  min-width: clamp(14px, 0.3vw + 11px, 100%);
+  height: clamp(18px, 0.3vw + 13px, 100%);
+  flex: 0 0 auto;
+  align-items: center;
+  color: #12213d;
+  font-size: clamp(15px, 0.4vw + 11px, 100%);
+  font-weight: 700;
+}
+
+.stepTitle {
+  min-width: 0;
+  flex: 1;
+  overflow: hidden;
+  color: #12213d !important;
+  font-size: clamp(14px, 0.4vw + 11px, 100%) !important;
+  font-weight: 700;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.stepDetails {
+  display: grid;
+  min-width: 0;
+  gap: clamp(2px, 0.05vw + 2px, 100%);
+  overflow: hidden;
+  padding-left: clamp(1px, 0.1vw + 1px, 100%);
+  color: #52627b;
+  font-size: clamp(10px, 0.05vw + 9px, 100%);
+  line-height: 1.35;
+}
+
+.stepFooter {
+  min-height: clamp(16px, 0.15vw + 12px, 100%);
+  justify-content: space-between;
+  padding-top: clamp(2px, 0.1vw + 1px, 100%);
+  border-top: 1px solid #edf1f5;
+}
+
+@container (max-height: 220px) {
+  .stepCard {
+    min-height: clamp(60px, 2vw + 24px, 100%);
+    padding: clamp(3px, 0.15vw + 3px, 100%) clamp(4px, 0.15vw + 3px, 100%);
+  }
+
+  .stepIcon {
+    width: clamp(11px, 0.2vw + 9px, 100%);
+    height: clamp(11px, 0.2vw + 9px, 100%);
+    font-size: clamp(14px, 0.4vw + 10px, 100%);
+  }
+
+  .stepNumber {
+    font-size: clamp(11px, 0.2vw + 10px, 100%);
+  }
+
+  .stepTitle {
+    font-size: clamp(13px, 0.3vw + 10px, 100%) !important;
+  }
+}
+
+@container (max-height: 170px) {
+  .stepCard {
+    min-height: clamp(46px, 2vw + 18px, 100%);
+    padding: clamp(2px, 0.1vw + 2px, 100%) clamp(3px, 0.1vw + 2px, 100%);
+  }
+
+  .stepDetails {
+    display: none;
+  }
+
+  .stepIcon {
+    display: none;
+  }
+
+  .stepNumber {
+    display: none;
+  }
+}
+
+.stepCardCurrent {
+  border-color: #1269c7;
+  box-shadow: 0 0 0 2px rgb(18 105 199 / 10%);
+}
+
+.stepCardCurrent .stepIcon,
+.stepCardCurrent .stepNumber,
+.stepCardCurrent .stepTitle {
+  color: #1269c7 !important;
+}
+
+.stepDetails>span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.workspaceNotice {
+  display: block;
+  flex: 0 0 auto;
+  padding-top: clamp(1px, 0.1vw + 1px, 100%);
+  font-size: clamp(10px, 0.05vw + 9px, 100%);
+}
+
+.requirementRow {
+  display: grid;
+  flex: 0 0 clamp(72px, 4vw + 36px, 100%);
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(4px, 0.2vw + 3px, 100%);
+}
+
+.contextCard,
+.outputCard {
+  min-width: 0;
+  min-height: 0;
+  overflow: hidden;
+  border-color: #e4eaf2;
+  border-radius: clamp(4px, 0.1vw + 3px, 100%);
+}
+
+.contextCard :global(.ant-card-body),
+.outputCard :global(.ant-card-body) {
+  display: flex;
+  min-width: 0;
+  min-height: 0;
+  height: 100%;
+  flex-direction: column;
+  gap: clamp(2px, 0.1vw + 2px, 100%);
+  padding: clamp(5px, 0.15vw + 3px, 100%) clamp(6px, 0.15vw + 4px, 100%);
+}
+
+.cardHeading {
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: clamp(3px, 0.1vw + 2px, 100%);
+  color: #243855;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.cardHeading > span:first-child {
+  flex: 0 0 auto;
+  color: #1269c7;
+  font-size: 14px;
+}
+
+.cardHeadingRight {
+  display: flex;
+  align-items: center;
+  gap: clamp(3px, 0.1vw + 2px, 100%);
+}
+
+.cardHeadingRight :global(.ant-tag) {
+  font-size: 12px;
+}
+
+.requirementSummary {
+  display: -webkit-box;
+  min-height: 0;
+  margin: 0;
+  overflow: hidden;
+  color: #52627b;
+  line-height: 1.4;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 4;
+}
+
+
+.outputRow {
+  flex: 1 1 auto;
+  overflow: hidden;
+}
+
+.outputSnapshotCard,
+.recentActivityCard {
+  min-width: 0;
+  border-color: #e4eaf2;
+  border-radius: clamp(4px, 0.1vw + 3px, 100%);
+}
+
+.outputSnapshotCard :global(.ant-card-body),
+.recentActivityCard :global(.ant-card-body) {
+  display: grid;
+  gap: clamp(3px, 0.1vw + 2px, 100%);
+  padding: clamp(5px, 0.15vw + 3px, 100%);
+}
+
+.sideHeading {
+  display: flex;
+  min-width: 0;
+  align-items: center;
+  gap: clamp(3px, 0.1vw + 2px, 100%);
+  color: #243855;
+  font-size: clamp(10px, 0.15vw + 9px, 100%) !important;
+  font-weight: 700;
+}
+
+.sideHeading :first-child {
+  color: #1269c7;
+}
+
+.outputSnapshotList {
+  display: grid;
+  gap: clamp(3px, 0.1vw + 2px, 100%);
+}
+
+.outputSnapshotItem {
+  display: grid;
+  min-width: 0;
+  gap: clamp(1px, 0.1vw + 1px, 100%);
+  padding: clamp(4px, 0.2vw + 3px, 100%) 0;
+  border-bottom: 1px solid #edf1f5;
+}
+
+.outputSnapshotItem>div {
+  display: flex;
+  min-width: 0;
+  align-items: center;
+  gap: clamp(2px, 0.1vw + 2px, 100%);
+}
+
+.runInspector {
+  display: grid;
+  gap: clamp(6px, 0.3vw + 4px, 100%);
+}
+
+.inspectorSummary,
+.inspectorSection {
+  display: grid;
+  gap: clamp(4px, 0.15vw + 3px, 100%);
+}
+
+.inspectorSummary {
+  padding-bottom: clamp(6px, 0.2vw + 4px, 100%);
+  border-bottom: 1px solid #e9eef4;
+}
+
+.inspectorSummary>div {
+  display: flex;
+  min-width: 0;
+  align-items: center;
+  gap: clamp(4px, 0.15vw + 3px, 100%);
+  padding: 8px 10px;
+  border-left: 4px solid #1677ff;
+  border-radius: 0 6px 6px 0;
+  background: #eef6ff;
+}
+
+.inspectorHeading {
+  display: flex;
+  align-items: center;
+  gap: clamp(3px, 0.1vw + 2px, 100%);
+  color: #243855;
+  font-weight: 700;
+}
+
+.inspectorTimeline,
+.inspectorRequests,
+.acceptanceList {
+  display: grid;
+  gap: clamp(3px, 0.1vw + 2px, 100%);
+}
+
+.acceptanceList>div {
+  display: flex;
+  min-width: 0;
+  align-items: center;
+  gap: clamp(3px, 0.1vw + 2px, 100%);
+}
+
+.inspectorTimelineItem {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: clamp(4px, 0.15vw + 3px, 100%);
+  padding: clamp(4px, 0.15vw + 3px, 100%) clamp(4px, 0.15vw + 3px, 100%);
+  border: 1px solid #edf1f5;
+  border-radius: clamp(4px, 0.1vw + 3px, 100%);
+}
+.inspectorTimelineContent { display: grid; min-width: 0; gap: 2px; }
+.inspectorTimelineContent > :global(.ant-typography) { min-width: 0; }
+.inspectorTimelineError { display: block; min-width: 0; font-size: 11px; }
+
+.inspectorLogs {
+  display: grid;
+  max-height: clamp(140px, 10vw + 40px, 100%);
+  overflow: auto;
+  padding: clamp(5px, 0.2vw + 3px, 100%);
+  border: 1px solid #29394f;
+  border-radius: clamp(5px, 0.1vw + 4px, 100%);
+  background: #172638;
+  color: #dbe8f5;
+  font-family: 'Cascadia Mono', Consolas, monospace;
+  font-size: clamp(10px, 0.05vw + 9px, 100%);
+  line-height: 1.5;
+}
+
+.inspectorLogs>div {
+  display: grid;
+  grid-template-columns: clamp(18px, 0.8vw + 12px, 100%) minmax(0, 1fr);
+  gap: clamp(4px, 0.15vw + 3px, 100%);
+}
+
+.inspectorContext,
+.inspectorForm {
+  display: grid;
+  gap: clamp(3px, 0.1vw + 2px, 100%);
+}
+
+.inspectorState {
+  display: flex;
+  min-height: clamp(24px, 0.3vw + 18px, 100%);
+  align-items: center;
+  gap: clamp(4px, 0.15vw + 3px, 100%);
+}
+
+.outputGrid {
+  display: grid;
+  min-width: 0;
+  min-height: 0;
+  flex: 1 1 auto;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(4px, 0.2vw + 3px, 100%);
+}
+
+.outputCard {
+  height: 100%;
+}
+
+.artifactSummaryGrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: clamp(2px, 0.1vw + 1px, 100%);
+  min-width: 0;
+  overflow: auto;
+}
+
+.diffSummaryList,
+.deliverySummaryList {
+  display: grid;
+  min-width: 0;
+  gap: clamp(2px, 0.1vw + 1px, 100%);
+  overflow: auto;
+}
+
+.artifactSummary,
+.diffSummaryRow,
+.deliverySummaryRow {
+  min-width: 0;
+  padding: clamp(2px, 0.1vw + 1px, 100%) clamp(3px, 0.1vw + 2px, 100%);
+  border: 1px solid #edf1f5;
+  border-radius: clamp(3px, 0.1vw + 2px, 100%);
+}
+
+.artifactSummary {
+  display: grid;
+  gap: clamp(1px, 0.05vw + 1px, 100%);
+}
+
+.artifactSummary>div,
+.diffSummaryRow,
+.deliverySummaryRow {
+  gap: clamp(2px, 0.1vw + 2px, 100%);
+}
+
+.artifactSummary>div:first-child {
+  display: flex;
+  min-width: 0;
+  align-items: center;
+  gap: clamp(2px, 0.1vw + 1px, 100%);
+}
+
+.artifactSummary>div:first-child :last-child,
+.diffSummaryRow > :first-child,
+.deliverySummaryRow > :first-child {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.diffSummaryRow :global(.ant-tag),
+.deliverySummaryRow :global(.ant-tag) {
+  font-size: clamp(10px, 0.05vw + 9px, 100%);
+}
+
+.artifactSummary :global(.ant-tag) {
+  flex: 0 0 auto;
+  margin: 0;
+  font-size: clamp(9px, 0.05vw + 8px, 100%);
+}
+
+.diffSummaryRow,
+.deliverySummaryRow {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  color: #52627b;
+  font-size: clamp(10px, 0.05vw + 9px, 100%);
+}
+
+.reviewActions {
+  display: grid;
+  gap: 8px;
+  padding: 8px 10px;
+  border: 1px solid #e7edf3;
+  border-radius: 7px;
+  background: #fafcff;
+}
+
+.reviewActionBar,
+.rejectDeliveryActions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.reviewActionBar :global(.ant-btn-primary) {
+  min-width: 104px;
+}
+
+.rejectDeliveryActions { justify-content: flex-end; }
+
+.rejectDeliveryForm {
+  display: grid;
+  gap: 7px;
+  padding-top: 8px;
+  border-top: 1px solid #e7edf3;
+}
+
+.rejectDeliveryForm :global(.ant-form-item) {
+  margin-bottom: 0;
+}
+
+.compactEmpty,
+.inlineState {
+  color: #6d7d95;
+  font-size: clamp(10px, 0.1vw + 9px, 100%) !important;
+  line-height: 1.4;
+}
+
+.inlineState {
+  display: flex;
+  min-height: clamp(20px, 0.3vw + 16px, 100%);
+  align-items: center;
+  gap: clamp(3px, 0.1vw + 2px, 100%);
+}
+
+.taskFailureDiagnostic {
+  margin: 8px 0 0;
+}
+
+.inspectorDiagnostic {
+  display: grid;
+  gap: 7px;
+  font-size: 12px;
+}
+
+.inspectorDiagnosticItem {
+  display: grid;
+  gap: 2px;
+  margin-top: 5px;
+  padding: 6px 8px;
+  border: 1px solid #edf1f5;
+  border-radius: 5px;
+}
+
+.panelState {
+  display: grid;
+  min-height: clamp(56px, 3vw + 24px, 100%);
+  place-items: center;
+}
+
+.stepInfoBullet {
+  color: #12213d;
+  font-size: clamp(13px, 0.3vw + 10px, 100%);
+  font-weight: 700;
+}
+
+.runLogsPanel {
+  display: grid;
+  gap: clamp(4px, 0.2vw + 3px, 100%);
+}
+
+.runLogsTerminal {
+  display: grid;
+  gap: clamp(3px, 0.15vw + 2px, 100%);
+  padding: clamp(6px, 0.2vw + 4px, 100%);
+  border: 1px solid #e4eaf2;
+  border-radius: clamp(4px, 0.1vw + 3px, 100%);
+  background: #f8fafd;
+}
+
+.runLogsTerminalContent {
+  margin: 0;
+  font-family: 'Cascadia Mono', Consolas, monospace;
+  font-size: clamp(10px, 0.05vw + 9px, 100%);
+  white-space: pre-wrap;
+  word-break: break-all;
+}
+
+.runLogEntry {
+  display: grid;
+  grid-template-columns: clamp(18px, 0.8vw + 12px, 100%) minmax(0, 1fr);
+  gap: clamp(4px, 0.15vw + 3px, 100%);
+}
+
+.runLogEntry[data-entry-type='SYSTEM'] {
+  opacity: 0.75;
+}
+
+.runLogEntry[data-entry-type='EXECUTION'] {
+  opacity: 1;
+}
+
+.workspaceDiffPreviewPatch {
+  display: block;
+  height: 100%;
+  max-height: 360px;
+  margin: 0;
+  overflow: auto;
+  overscroll-behavior: contain;
+  border: 1px solid #e7edf3;
+  border-radius: 6px;
+  background: #f8fafc;
+  color: #26364d;
+  white-space: normal;
+}
+
+.workspaceDiffPreviewPatchRow {
+  display: grid;
+  grid-template-columns: 52px 52px 24px max-content;
+  width: max-content;
+  min-width: 100%;
+  min-height: 22px;
+  font-family: 'Cascadia Mono', Consolas, monospace;
+  font-size: 12px;
+  line-height: 1.55;
+  white-space: normal;
+}
+
+.workspaceDiffPreviewPatchRow:hover {
+  background: rgba(52, 126, 255, 0.06);
+}
+
+.workspaceDiffPreviewPatchLineNumber {
+  box-sizing: border-box;
+  padding: 0 8px;
+  overflow: hidden;
+  color: #8c9bad;
+  text-align: right;
+  user-select: none;
+}
+
+.workspaceDiffPreviewPatchMarker {
+  box-sizing: border-box;
+  padding: 0 4px;
+  font-weight: 700;
+  text-align: center;
+  user-select: none;
+}
+
+.workspaceDiffPreviewPatchCode {
+  display: block;
+  min-width: max-content;
+  padding: 0 10px 0 4px;
+  white-space: pre;
+}
+
+.workspaceDiffPreviewPatchAdded { background: #dafbe1; color: #116329; }
+.workspaceDiffPreviewPatchDeleted { background: #ffebe9; color: #a40e26; }
+.workspaceDiffPreviewPatchMeta { background: #ddf4ff; color: #0969da; }
+.workspaceDiffPreviewPatchContext { background: transparent; }
+
+.workspaceDiffPreviewViewer {
+  display: grid;
+  grid-template-columns: minmax(210px, 26%) minmax(0, 1fr);
+  min-height: 300px;
+  overflow: hidden;
+  border: 1px solid #e7edf3;
+  border-radius: 6px;
+  background: #fff;
+}
+
+.recentExecutionPanel > .inlineState {
+  padding: 8px 10px;
+  border-left: 2px solid #1677ff;
+  border-radius: 5px;
+  background: #f0f7ff;
+}
+
+.workspaceDiffPreviewFiles {
+  display: grid;
+  align-content: start;
+  gap: 8px;
+  min-width: 0;
+  max-height: 360px;
+  padding: 9px;
+  overflow: auto;
+  border-right: 1px solid #e7edf3;
+  background: #fafcff;
+}
+
+.workspaceDiffPreviewFilesHeading { font-size: 12px; color: #61758d; }
+.workspaceDiffPreviewFilesHeading :global(.anticon) { margin-right: 5px; color: #d48806; }
+
+.workspaceDiffPreviewRepo {
+  display: grid;
+  gap: 3px;
+}
+
+.workspaceDiffPreviewRepoHeading { display: flex; justify-content: space-between; gap: 8px; min-width: 0; padding: 2px 3px; }
+.workspaceDiffPreviewRepoName { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 12px; }
+
+.workspaceDiffPreviewFileList {
+  display: grid;
+  gap: 4px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.workspaceDiffPreviewFileItem {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  width: 100%;
+  padding: 4px 6px;
+  border: 0;
+  border-radius: 4px;
+  background: transparent;
+  color: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.workspaceDiffPreviewFileItem:hover:not(:disabled),
+.workspaceDiffPreviewFileItemSelected {
+  border-color: #1677ff;
+  background: #f0f7ff;
+}
+
+.workspaceDiffPreviewFileItem:disabled { cursor: not-allowed; opacity: .58; }
+.workspaceDiffPreviewPath { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.workspaceDiffPreviewStats { display: none; white-space: nowrap; }
+.workspaceDiffPreviewEmptySelection {
+  display: grid;
+  min-height: 100%;
+  place-items: center;
+  border: 1px dashed #d8e1eb;
+  border-radius: 5px;
+  background: #fafcff;
+}
+
+.workspaceDiffPreviewEmptySelection :global(.ant-empty) { margin: 0; }
+
+.workspaceDiffPreviewContent {
+  min-width: 0;
+  min-height: 0;
+  max-height: 360px;
+  padding: 9px;
+  overflow: auto;
+  background: #fff;
+}
+
+.workspaceDiffPreviewContent :global(.ant-alert) { margin: 0; }
+
+.workspaceDiffPreviewSelectedFile {
+  display: grid;
+  gap: 9px;
+  min-width: 0;
+}
+
+.panelEmptyPlaceholder {
+  display: grid;
+  flex: 1 1 auto;
+  min-height: 92px;
+  place-content: center;
+  justify-items: center;
+  gap: 8px;
+  padding: 16px;
+  border: 1px dashed #d8e1ec;
+  border-radius: 6px;
+  background: #fbfcfe;
+  color: #71829a;
+}
+
+.panelEmptyPlaceholderIcon {
+  display: grid;
+  width: 28px;
+  height: 28px;
+  place-items: center;
+  border-radius: 50%;
+  background: #edf3fa;
+  color: #8a9bb4;
+  font-size: 15px;
+}
+
+.recentExecutionPanel > .panelEmptyPlaceholder {
+  min-height: 0;
+  margin-bottom: 2px;
+}
+
+.workspaceDiffPreviewSelectedFileHeading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  min-width: 0;
+  padding: 1px 1px 8px;
+  border-bottom: 1px solid #edf1f5;
+}
+
+.workspaceDiffPreviewSelectedFileName {
+  min-width: 0;
+  overflow: hidden;
+  color: #1f2f46;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: 12px;
+  font-weight: 600;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.workspaceDiffPreviewSelectedFileStats {
+  display: inline-flex;
+  flex: 0 0 auto;
+  gap: 8px;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: 12px;
+}
+
+.workspaceDiffPreviewSelectedFileAdditions { color: #1a7f37; }
+.workspaceDiffPreviewSelectedFileDeletions { color: #cf222e; }
+
+.workspaceDiffPreviewLoadingFile {
+  display: grid;
+  min-height: 180px;
+  place-items: center;
+}
+
+.workspaceDiffPreviewAlert {
+  margin-top: 5px;
+}
+
+.previewLoadingState,
+.deliveryGenerationPlaceholder :global(.ant-card-body) {
+  display: grid;
+  gap: 10px;
+  align-content: center;
+}
+
+.previewLoadingState {
+  min-height: 112px;
+}
+
+.previewLoadingLines,
+.deliveryGenerationLines {
+  display: grid;
+  gap: 8px;
+}
+
+.previewLoadingLines span,
+.deliveryGenerationLines span {
+  display: block;
+  height: 10px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, #edf1f5 25%, #f8fafc 37%, #edf1f5 63%);
+  background-size: 400% 100%;
+  animation: taskDetailLoadingShimmer 1.35s ease-in-out infinite;
+}
+
+.previewLoadingLines span:nth-child(2),
+.deliveryGenerationLines span:nth-child(2) { width: 76%; }
+.previewLoadingLines span:nth-child(3),
+.deliveryGenerationLines span:nth-child(3) { width: 54%; }
+
+.deliveryGenerationPlaceholder :global(.ant-card-body) {
+  min-height: 118px;
+}
+
+@keyframes taskDetailLoadingShimmer {
+  0% { background-position: 100% 0; }
+  100% { background-position: 0 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .previewLoadingLines span,
+  .deliveryGenerationLines span { animation: none; }
+}
+
+.codeDeliveryCard {
+  min-width: 0;
+  min-height: 0;
+  height: 100%;
+  border-color: #e4eaf2;
+  border-radius: clamp(4px, 0.1vw + 3px, 100%);
+  overflow: auto;
+}
+
+.codeDeliveryCard :global(.ant-card-body) {
+  display: grid;
+  min-width: 0;
+  min-height: 0;
+  gap: clamp(6px, 0.25vw + 4px, 100%);
+  padding: clamp(6px, 0.2vw + 4px, 100%);
+}
+
+.codeChangeSection,
+.deliverySection {
+  display: grid;
+  min-width: 0;
+  gap: clamp(4px, 0.15vw + 3px, 100%);
+}
+
+.deliverySection {
+  padding-top: clamp(6px, 0.25vw + 4px, 100%);
+  border-top: 1px solid #edf1f5;
+}
+
+.deliveryReason {
+  margin-top: calc(clamp(2px, 0.1vw + 1px, 100%) * -1);
+}
+
+.codeDeliveryRepositoryRow {
+  display: grid;
+  min-width: 0;
+  grid-template-columns: minmax(0, 1fr) auto auto;
+  gap: clamp(4px, 0.2vw + 3px, 100%);
+  align-items: center;
+  padding: clamp(4px, 0.15vw + 3px, 100%) clamp(5px, 0.15vw + 4px, 100%);
+  border: 1px solid #edf1f5;
+  border-radius: clamp(3px, 0.1vw + 2px, 100%);
+}
+
+.codeDeliveryRepositoryInfo {
+  display: grid;
+  min-width: 0;
+  gap: 1px;
+}
+
+.codeDeliveryRepositoryInfo :global(.ant-typography) {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.codeDeliveryActions {
+  display: flex;
+  align-items: center;
+  gap: clamp(3px, 0.1vw + 2px, 100%);
+  white-space: nowrap;
+}
+
+.codeDeliveryActions :global(.ant-btn) {
+  padding-inline: 0;
+}
+
+.codeDeliveryFailure {
+  grid-column: 1 / -1;
+}
+
+/* Task detail hierarchy refresh: identity → action → flow → history → workspace. */
+.taskHeader { padding: clamp(10px, 0.35vw + 7px, 100%) 0 clamp(9px, 0.3vw + 6px, 100%); }
+.headerIdentity { display: grid; min-width: 0; gap: 2px; }
+.taskCode { font-size: clamp(11px, 0.12vw + 9px, 100%); font-weight: 700; }
+.taskTitle { font-size: clamp(18px, 0.45vw + 14px, 100%) !important; }
+.headerMeta {
+  display: flex;
+  min-width: 0;
+  flex-wrap: wrap;
+  gap: clamp(2px, 0.3vw, 5px) clamp(7px, 0.65vw + 3px, 16px);
+  padding: clamp(4px, 0.2vw + 2px, 7px) 0 0;
+}
+
+.headerMetaItem {
+  display: flex;
+  min-width: 0;
+  max-width: min(46%, clamp(150px, 31vw, 340px));
+  align-items: baseline;
+  gap: clamp(3px, 0.2vw, 5px);
+  padding: clamp(1px, 0.1vw, 2px) 0;
+}
+
+.headerMetaItem :global(.ant-typography) {
+  min-width: 0;
+  font-size: clamp(11px, 0.3vw + 8px, 13px);
+  line-height: clamp(16px, 0.45vw + 11px, 19px);
+}
+
+.headerMetaItem > :global(.ant-typography:first-child) {
+  flex: 0 0 auto;
+  font-size: clamp(10px, 0.25vw + 7px, 12px);
+}
+
+.attentionBanner { padding: clamp(6px, 0.25vw + 4px, 100%) 0 0; }
+.attentionCard { display: flex; min-width: 0; align-items: center; justify-content: space-between; gap: 12px; padding: 10px 12px; border: 1px solid #f4d58b; border-radius: 8px; background: #fffbeb; }
+.attentionCard > div:first-child { display: grid; min-width: 0; gap: 2px; }
+.attentionCard > div:first-child :global(.ant-typography) { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.attentionTitle { color: #7c5700; font-size: 14px; }
+.attentionActions { display: flex; flex: 0 0 auto; align-items: center; gap: 6px; }
+
+.content { grid-template-rows: minmax(clamp(156px, 11vw + 12px, 100%), 0.95fr) minmax(0, 1.35fr); }
+.workbenchMain { display: flex; flex-direction: column; gap: clamp(12px, 0.6vw + 6px, 100%); overflow-y: auto; padding-right: 4px; }
+
+.recentExecutionList { display: grid; min-width: 0; gap: 2px; padding: 2px 0; }
+.recentRunItem { display: grid; width: 100%; grid-template-columns: 8px minmax(0, 1fr) auto; gap: 8px; align-items: center; padding: 8px 10px; border: 0; border-left: 2px solid transparent; border-radius: 5px; }
+.runStatusDot { width: 7px; height: 7px; border-radius: 50%; background: #a3afc0; }
+.runStatusSpinner { display: inline-flex; align-items: center; justify-content: center; width: 7px; height: 7px; }
+.runStatusDot[data-status='RUNNING'] { background: #1677ff; }
+.runStatusDot[data-status='SUCCEEDED'] { background: #16a34a; }
+.runStatusDot[data-status='FAILED'], .runStatusDot[data-status='BLOCKED'], .runStatusDot[data-status='CANCELLED'] { background: #dc2626; }
+.runStatusDot[data-status='WAITING_INPUT'], .runStatusDot[data-status='WAITING_APPROVAL'] { background: #d99800; }
+
+/* 中间栏采用连续阅读流：仅任务头固定，流程、运行与交付随中间栏自然滚动。 */
+.taskWorkspaceMain {
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+.taskHeader {
+  position: sticky;
+  top: 0;
+  z-index: 4;
+  background: #fff;
+}
+
+.content {
+  display: flex;
+  min-height: auto;
+  flex: 0 0 auto;
+  flex-direction: column;
+  gap: clamp(12px, 0.6vw + 6px, 100%);
+  padding-bottom: clamp(16px, 1vw + 8px, 100%);
+}
+
+.executionFlowRow {
+  height: 320px;
+  flex: 0 0 320px;
+}
+
+.workbenchMain {
+  min-height: auto;
+  overflow: visible;
+}
+
+.recentExecutionPanel {
+  height: 220px;
+  min-height: 220px;
+  overflow: auto;
+}
+
+.deliveryPanel {
+  height: 420px;
+  min-height: 420px;
+  overflow: auto;
+}
+
+.recentExecutionPanel .panelHeading {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  padding-bottom: 8px;
+  background: #fff;
+}
+
+.deliveryPanel .panelHeading {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  padding-bottom: 8px;
+  background: #fff;
+}
+
+.recentExecutionPanel .panelHeading h3,
+.deliveryPanel .panelHeading h3 {
+  font-size: 16px !important;
+}
+
+.inspectorRunTitle {
+  width: auto;
+  min-width: 0;
+  flex: 1 1 auto;
+  margin: 0 !important;
+  overflow: hidden;
+  color: #0b3d78 !important;
+  font-size: 22px !important;
+  font-weight: 800 !important;
+  line-height: 1.3 !important;
+  text-overflow: ellipsis;
+  white-space: normal;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+
+.inspectorTitleBlock {
+  display: grid !important;
+  align-items: start !important;
+  gap: 3px !important;
+}
+
+.inspectorStepLabel {
+  color: #1677ff !important;
+  font-size: 11px !important;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+}
+
+.inspectorRunStatus {
+  width: fit-content;
+  margin-inline-end: 0 !important;
+}
+
+.inspectorSummary>div>:global(.ant-tag) {
+  flex: 0 0 auto;
+  margin-inline-end: 0;
+}
+
+.diagnosticStage {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.diagnosticStage :global(.ant-tag) {
+  margin-inline-end: 0;
+}
+
+.recentExecutionPanel .panelHeading {
+  padding-top: 9.2px;
+}
+
+.deliveryPanel .panelHeading {
+  padding-top: 7.2px;
+}
+
+#execution-flow .rowHeading {
+  padding: 4px 0;
+}
+
+.taskTitle {
+  width: min(151.06px, 45vw);
+  flex: 0 1 151.06px;
+}
+
+.taskWorkspaceAside {
+  display: flex;
+  overflow: visible;
+}
+
+.runInspectorPanel {
+  height: auto;
+  min-height: 0;
+  flex: 1 1 auto;
+  box-sizing: border-box;
+  align-content: start;
+}
+
+.runInspector {
+  align-content: start;
+}
+
+.runLogsTerminal {
+  height: auto;
+  min-height: 116px;
+}
+
+.runLogsTerminalContent {
+  display: block;
+  overflow: visible;
+}
+
+.runLogsPanel {
+  height: 300px;
+  min-height: 0;
+  align-content: start;
+  overflow: auto;
+}
+
+/* 执行步骤超过可用宽度时，明确提供横向滚动条。 */
+.flowScroller {
+  scrollbar-width: thin;
+  scrollbar-color: #aab8ca transparent;
+}
+
+.flowScroller::-webkit-scrollbar {
+  display: block;
+  height: 8px;
+}
+
+.flowScroller::-webkit-scrollbar-thumb {
+  border-radius: 999px;
+  background: #aab8ca;
+}
+
+.flowScroller::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+/* 保留滚动交互，但不在任务详情工作台暴露浏览器滚动条。 */
+.page * {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.page *::-webkit-scrollbar {
+  display: none;
+  width: 0;
+  height: 0;
+}
+.recentRunItemMain { display: grid; min-width: 0; gap: 2px; }
+.recentRunItemRow { justify-content: flex-start; }
+.recentRunItemStatus { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.recentRunItemSelected { border-left-color: #1269c7; background: #f0f7ff; box-shadow: none; }
+
+/* 置于全局隐藏规则之后，确保执行流程的横向拖拽条始终可见。 */
+.flowScroller {
+  overflow-x: scroll !important;
+  overflow-y: hidden;
+  scrollbar-gutter: stable;
+  scrollbar-width: thin !important;
+  scrollbar-color: #8da0b8 #edf2f7;
+}
+
+.flowScroller::-webkit-scrollbar {
+  display: block !important;
+  width: auto !important;
+  height: 8px !important;
+}
+
+.flowScroller::-webkit-scrollbar-thumb {
+  background: #8da0b8;
+}
+
+.flowScroller::-webkit-scrollbar-track {
+  background: #edf2f7;
+}
+
+/* 右栏信息不变，仅用字号、留白与分隔提升层级。 */
+.runInspectorPanel {
+  font-size: 13px;
+}
+
+.runInspector {
+  gap: 12px;
+}
+
+.inspectorSummary,
+.inspectorSection {
+  gap: 7px;
+}
+
+.runInspector > .inspectorSection {
+  padding-bottom: 10px;
+  border-bottom: 1px solid #edf1f5;
+}
+
+.runInspector > .inspectorSection:last-child {
+  padding-bottom: 0;
+  border-bottom: 0;
+}
+
+.runInspectorFooter {
+  display: grid;
+  gap: 3px;
+  padding: 8px 10px;
+  border: 0;
+  border-radius: 6px;
+  background: #f7f9fc;
+  color: #52627b;
+  font-size: 12px;
+}
+
+.inspectorHeading {
+  font-size: 14px;
+  letter-spacing: 0.01em;
+}
+
+.inspectorTimeline,
+.inspectorRequests,
+.acceptanceList {
+  gap: 6px;
+}
+
+.inspectorTimelineItem,
+.inspectorDiagnosticItem {
+  padding: 8px 10px;
+}
+
+/* 内部轨迹与日志使用一致的定高观察窗，超出时在各自区域内滚动。 */
+.inspectorTimeline {
+  height: 200px;
+  min-height: 200px;
+  overflow-y: auto;
+  align-content: start;
+}
+
+.internalTracePlaceholder {
+  display: grid;
+  min-height: 112px;
+  align-items: center;
+  padding: 12px;
+  border: 1px solid #edf1f5;
+  border-radius: 6px;
+  background: #fafcff;
+}
